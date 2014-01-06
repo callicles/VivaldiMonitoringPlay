@@ -1,5 +1,7 @@
 @(network: String)
 
+@import models._
+
 @main("Welcome Vivaldi Monitor"){
     <div class="row full-width">
         <div class="large-3 columns sidebar">
@@ -15,11 +17,10 @@
                     <div class="row">
                         <div class="large-12 columns">
                             <label>Network :</label>
-                            <select>
-                                <option value="default">Default</option>
-                                <option value="starbuck">Starbuck</option>
-                                <option value="hotdog">Hot Dog</option>
-                                <option value="apollo">Apollo</option>
+                            <select name="network" id="networkSelect">
+                                @for(network <- Network.all()){
+                                    <option value="@network.id">@network.networkName</option>
+                                }
                             </select>
                         </div>
                     </div>

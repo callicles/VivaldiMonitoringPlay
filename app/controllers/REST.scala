@@ -13,12 +13,13 @@ import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import models._
+import utils.Joda._
 
 object REST extends Controller {
 
   def networks = Action {
     Ok(Json.toJson(Network.all().map{ t =>
-      Json.obj("id" ->t.id.toString,"networkName" ->t.networkName)
+      Json.obj("id" ->t.id,"networkName" ->t.networkName)
     }))
   }
 
@@ -43,7 +44,7 @@ object REST extends Controller {
 
   def nodes = Action {
     Ok(Json.toJson(Node.all().map{ t =>
-      Json.obj("id" ->t.id.toString,"nodeName" ->t.nodeName, "networkId" ->t.networkId)
+      Json.obj("id" ->t.id,"nodeName" ->t.nodeName, "networkId" ->t.networkId)
     }))
   }
 
@@ -65,6 +66,11 @@ object REST extends Controller {
     }
   }
 
+  def getNodesFromNetwork(id: Long) = Action {
+    Node.getNodesFromNetwork(id)
+    Ok("Node retrieved")
+  }
+
   def deleteNodes (id: Long) = Action {
     Node.delete(id)
     Ok("Node Deleted")
@@ -72,7 +78,7 @@ object REST extends Controller {
 
   def initTimes = Action {
     Ok(Json.toJson(InitTime.all().map{ t =>
-      Json.obj("id" ->t.id.toString,"nodeId" ->t.nodeId, "initTime" ->t.initTime)
+      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "initTime" ->t.initTime)
     }))
   }
 
@@ -98,7 +104,7 @@ object REST extends Controller {
 
   def coordinates = Action {
     Ok(Json.toJson(Coordinate.all().map{ t =>
-      Json.obj("id" ->t.id.toString,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x, "y" ->t.y)
+      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x, "y" ->t.y)
     }))
   }
 
@@ -119,6 +125,22 @@ object REST extends Controller {
       }.recoverTotal{
         e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
       }
+  }
+
+  /**
+   * This method retrieves the last 'numberOfCoordinatePerNode' coordinates for each node of the network
+   * @param networkId reference
+   * @param numberOfCoordinatePerNode number of coordinates to retrieve for each node
+   */
+  def getLastSavedCoordinatesFromNetwork(networkId: Long, numberOfCoordinatePerNode: Int) = Action {
+    val allNetworkCoordinate = Coordinate.getCoordinateFromNetwork(networkId)
+    val groupedByNode = allNetworkCoordinate.groupBy(_.nodeId)
+    val sortedMap = groupedByNode.mapValues(_.sortBy(_.coordinateTime))
+    val listToReturn = sortedMap.mapValues(list => list.take(numberOfCoordinatePerNode)).values.flatten
+
+    Ok(Json.toJson(listToReturn.map{ t =>
+      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x, "y" ->t.y)
+    }))
   }
 
   def deleteCoordinates (id: Long) = Action {

@@ -19,7 +19,6 @@ case class Coordinate(id: Long, nodeId: Long, coordinateTime: DateTime, x: Doubl
 
 object Coordinate {
 
-  //TODO how to retrieve timestamp
   val coordinate = {
     get[Long]("id") ~
     get[Long]("nodeId") ~
@@ -28,6 +27,12 @@ object Coordinate {
     get[Double]("y") map {
       case id~nodeId~coordinateTime~x~y => Coordinate(id, nodeId, coordinateTime, x, y)
     }
+  }
+
+  def getCoordinateFromNetwork(networkId: Long): List[Coordinate] = DB.withConnection { implicit c =>
+    SQL("select (coordinate.id,coordinate.nodeId,coordinate.coordinateTime,coordinate.x,coordinate.y) from coordinate" +
+      " join node on coordinate.nodeId = node.id" +
+      " where (node.networkId) = ({networkId})").as(coordinate *)
   }
 
   def all(): List[Coordinate] = DB.withConnection { implicit c =>

@@ -1,7 +1,22 @@
-.row.full-width { width: 100%; max-width: 100%; }
+.row.full-width {
+    width: 100%;
+    max-width: 100%;
+}
 
-.sidebar{background-color: #E9E9E7; height: 95vh; padding-top: 15px; padding-left: 30px; padding-right: 30px;}
+.sidebar{
+    background-color: #E9E9E7;
+    height: 95vh;
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
 
-.graphHolder{height: 70vh}
+.graphHolder{
+    height: 70vh
+}
 
-.details{background-color: #f2f2f2; height: 25vh; padding: 30px;}
+.details{
+    background-color: #f2f2f2;
+    height: 25vh;
+    padding: 30px;
+}

@@ -24,6 +24,10 @@ object Node {
     }
   }
 
+  def getNodesFromNetwork(networkId: Long): List[Node] = DB.withConnection { implicit c =>
+    SQL("select * from node where (id) = ({networkId})").as(node *)
+  }
+
   def all(): List[Node] = DB.withConnection { implicit c =>
     SQL("select * from node").as(node *)
   }
