@@ -2,19 +2,34 @@
 
 <!DOCTYPE html>
 
-<html>
+<html class="no-js" lang="en" >
     <head>
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/normalize.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/foundation.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
 
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
-        <script src="@routes.Assets.at("javascripts/vendor/modernizr.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/modernizr.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/GraphGenerator.js")" type="text/javascript"></script>
         <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     </head>
     <body>
+
+        <nav class="top-bar" data-topbar>
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">Vivaldi Monitor</a></h1>
+                </li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+            <section class="top-bar-section">
+            </section>
+        </nav>
 
         @content
 

@@ -1,7 +1,54 @@
-@(message: String)
+@(network: String)
 
-@main("Welcome to Play") {
+@main("Welcome Vivaldi Monitor"){
+    <div class="row full-width">
+        <div class="large-3 columns sidebar">
+            <div class="row">
+                <dl class="sub-nav">
+                    <dt>Graph:</dt>
+                    <dd class="active"><a href="#">Node Map</a></dd>
+                    <dd><a href="#">Node Detail</a></dd>
+                </dl>
+            </div>
+            <div class="row">
+                <form>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Network :</label>
+                            <select>
+                                <option value="default">Default</option>
+                                <option value="starbuck">Starbuck</option>
+                                <option value="hotdog">Hot Dog</option>
+                                <option value="apollo">Apollo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Coordinates/node :</label>
+                            <input type="radio" name="un" value="1" id="nodeCoordRateUn"><label for="nodeCoordRateUn">1</label>
+                            <input type="radio" name="dix" value="10" id="nodeCoordRateUn"><label for="nodeCoordRateUn">10</label>
+                        </div>
+                    </div>
+                    <a class="button radius">Generate</a>
+                </form>
+            </div>
+        </div>
+        <div class="large-9 columns">
+            <div class="row graphHolder">
+                <div class="large-12 columns">
 
-    @play20.welcome(message)
+                </div>
+            </div>
+            <div class="row details">
+                <div class="large-4 columns">
+                    <h3>Details :</h3>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 }
+

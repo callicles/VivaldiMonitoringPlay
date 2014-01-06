@@ -8,6 +8,8 @@ CREATE TABLE network (
     networkName varchar(255)
 );
 
+INSERT INTO network (networkName) VALUES ('default');
+
 CREATE SEQUENCE node_id_seq;
 CREATE TABLE node (
     id integer NOT NULL DEFAULT nextval('node_id_seq'),
