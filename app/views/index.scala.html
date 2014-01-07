@@ -3,10 +3,6 @@
 @import models._
 
 @main("Welcome Vivaldi Monitor"){
-    <script>
-        google.setOnLoadCallback(getCoordinateList(1));
-    </script>
-
 
     <div class="row full-width">
         <div class="large-3 columns sidebar">
@@ -36,7 +32,7 @@
                             <input type="radio" name="coordinatePerNode" value="10" id="nodeCoordRateDix"><label for="nodeCoordRateDix">10</label>
                         </div>
                     </div>
-                    <a class="button radius">Generate</a>
+                    <a class="button radius" onclick="getCoordinateList(getNetworkSelectedId())">Generate</a>
                 </form>
             </div>
         </div>
@@ -58,6 +54,10 @@
 
         </div>
     </div>
+
+    <script>
+        google.setOnLoadCallback(getCoordinateList(getNetworkSelectedId()));
+    </script>
 
 }
 
