@@ -14,6 +14,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import models._
 import utils.Joda._
+import java.math.BigDecimal
 
 object REST extends Controller {
 
@@ -104,7 +105,7 @@ object REST extends Controller {
 
   def coordinates = Action {
     Ok(Json.toJson(Coordinate.all().map{ t =>
-      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x, "y" ->t.y)
+      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x.floatValue(), "y" ->t.y.floatValue())
     }))
   }
 
@@ -112,12 +113,12 @@ object REST extends Controller {
 
     implicit val rdNewCoordinate = (
       (__ \ 'nodeId).read[Long] and
-      (__ \ 'x).read[Double] and
-      (__ \ 'y).read[Double]
+      (__ \ 'x).read[BigDecimal] and
+      (__ \ 'y).read[BigDecimal]
       ).tupled
 
     request =>
-      request.body.validate[(Long, Double, Double)].map{
+      request.body.validate[(Long, BigDecimal, BigDecimal)].map{
         case (nodeId, x, y) => {
           Coordinate.create(nodeId, x, y)
           Ok("Coordinate created")
@@ -139,7 +140,7 @@ object REST extends Controller {
     val listToReturn = sortedMap.mapValues(list => list.take(numberOfCoordinatePerNode)).values.flatten
 
     Ok(Json.toJson(listToReturn.map{ t =>
-      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x, "y" ->t.y)
+      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x.floatValue(), "y" ->t.y.floatValue())
     }))
   }
 

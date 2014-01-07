@@ -7,6 +7,7 @@ import play.api.Play.current
 
 import utils.AnormExtension._
 import org.joda.time.DateTime
+import java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,31 +16,47 @@ import org.joda.time.DateTime
  * Time: 14:31
  * To change this template use File | Settings | File Templates.
  */
-case class Coordinate(id: Long, nodeId: Long, coordinateTime: DateTime, x: Double, y: Double)
+case class Coordinate(id: Long, nodeId: Long, coordinateTime: DateTime, x: BigDecimal, y: BigDecimal)
 
 object Coordinate {
 
-  val coordinate = {
-    get[Long]("id") ~
-    get[Long]("nodeId") ~
-    get[DateTime]("coordinateTime") ~
-    get[Double]("x") ~
-    get[Double]("y") map {
+  val coordinateD = {
+    get[Long]("coordinate.id") ~
+    get[Long]("coordinate.nodeId") ~
+    get[DateTime]("coordinate.coordinateTime") ~
+    get[BigDecimal]("coordinate.x") ~
+    get[BigDecimal]("coordinate.y") map {
       case id~nodeId~coordinateTime~x~y => Coordinate(id, nodeId, coordinateTime, x, y)
     }
   }
 
   def getCoordinateFromNetwork(networkId: Long): List[Coordinate] = DB.withConnection { implicit c =>
-    SQL("select (coordinate.id,coordinate.nodeId,coordinate.coordinateTime,coordinate.x,coordinate.y) from coordinate" +
-      " join node on coordinate.nodeId = node.id" +
-      " where (node.networkId) = ({networkId})").as(coordinate *)
+    SQL(
+      """
+        Select d.id,d.nodeId,d.coordinateTime,d.x,d.y from coordinate as d
+        join node as n on n.id = d.nodeId
+        where n.networkId = {networkId}
+      """
+    ).on(
+      "networkId" -> networkId
+    ).as(coordinateD *)
+  }
+
+  val coordinate = {
+    get[Long]("id") ~
+      get[Long]("nodeId") ~
+      get[DateTime]("coordinateTime") ~
+      get[BigDecimal]("x") ~
+      get[BigDecimal]("y") map {
+      case id~nodeId~coordinateTime~x~y => Coordinate(id, nodeId, coordinateTime, x, y)
+    }
   }
 
   def all(): List[Coordinate] = DB.withConnection { implicit c =>
     SQL("select * from coordinate").as(coordinate *)
   }
 
-  def create(nodeId: Long, x: Double, y: Double) {
+  def create(nodeId: Long, x: BigDecimal, y: BigDecimal) {
     DB.withConnection { implicit c =>
       SQL("insert into coordinate (nodeId,x,y) values ({nodeId},{x},{y})").on(
         'nodeId -> nodeId,
