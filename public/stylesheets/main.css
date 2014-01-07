@@ -24,3 +24,7 @@
 #notifications .alert-box {
     margin-bottom: 0;
 }
+
+#chart_div {
+    height: 70vh;
+}

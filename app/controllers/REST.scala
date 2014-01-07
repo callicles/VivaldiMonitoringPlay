@@ -137,10 +137,11 @@ object REST extends Controller {
     val allNetworkCoordinate = Coordinate.getCoordinateFromNetwork(networkId)
     val groupedByNode = allNetworkCoordinate.groupBy(_.nodeId)
     val sortedMap = groupedByNode.mapValues(_.sortBy(_.coordinateTime))
-    val listToReturn = sortedMap.mapValues(list => list.take(numberOfCoordinatePerNode)).values.flatten
+    val listToReturn = sortedMap.mapValues(list => list.take(numberOfCoordinatePerNode)).values
 
-    Ok(Json.toJson(listToReturn.map{ t =>
-      Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x.floatValue(), "y" ->t.y.floatValue())
+    Ok(Json.toJson(listToReturn.map{ l =>
+      Json.toJson(l.map{t =>
+        Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x.floatValue(), "y" ->t.y.floatValue())})
     }))
   }
 
