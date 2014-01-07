@@ -20,3 +20,7 @@
     height: 25vh;
     padding: 30px;
 }
+
+#notifications .alert-box {
+    margin-bottom: 0;
+}

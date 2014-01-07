@@ -32,9 +32,17 @@
             </section>
         </nav>
 
+        <div id="notifications">
+
+        </div>
+
         @content
 
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/vendor/jquery.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/vendor/fastclick.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/vendor/placeholder.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/vendor/jquery.autocomplete.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/vendor/jquery.cookie.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/foundation.min.js")" type="text/javascript"></script>
         <script>
             $(document).foundation();
