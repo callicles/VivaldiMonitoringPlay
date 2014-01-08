@@ -1,6 +1,4 @@
-@(network: String)
-
-@import models._
+@(networks: List[Network], nodes: List[Node], initTimes: List[InitTime])
 
 @main("Welcome Vivaldi Monitor"){
 
@@ -9,8 +7,8 @@
             <div class="row">
                 <dl class="sub-nav">
                     <dt>Graph:</dt>
-                    <dd class="active"><a href="#">Node Map</a></dd>
-                    <dd><a href="./nodeDetail">Node Detail</a></dd>
+                    <dd><a href="./">Node Map</a></dd>
+                    <dd class="active"><a href="#">Node Detail</a></dd>
                 </dl>
             </div>
             <div class="row">
@@ -19,20 +17,33 @@
                         <div class="large-12 columns">
                             <label>Network :</label>
                             <select name="network" id="networkSelect">
-                                @for(network <- Network.all()){
-                                    <option value="@network.id">@network.networkName</option>
-                                }
+                            @for(network <- networks){
+                                <option value="@network.id">@network.networkName</option>
+                            }
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
-                            <label>Coordinates/node :</label>
-                            <input type="radio" name="coordinatePerNode" value="1" id="nodeCoordRateUn" checked><label for="nodeCoordRateUn">1</label>
-                            <input type="radio" name="coordinatePerNode" value="10" id="nodeCoordRateDix"><label for="nodeCoordRateDix">10</label>
+                            <label>Node :</label>
+                            <select name="node" id="nodeSelect">
+                            @for(node <- nodes){
+                                <option value="@node.id">@node.nodeName</option>
+                            }
+                            </select>
                         </div>
                     </div>
-                    <a class="button radius" onclick="getCoordinateList(getSelectedId('network'))">Generate</a>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Initialization Time :</label>
+                            <select name="initTime" id="initTimeSelect">
+                            @for(initTime <- initTimes){
+                                <option value="@initTime.id">@initTime.initTime.toString("dd-MM-yyyy HH:mm:ss")</option>
+                            }
+                            </select>
+                        </div>
+                    </div>
+                    <a class="button radius" onclick="getCoordinateList(getNetworkSelectedId())">Generate</a>
                 </form>
             </div>
         </div>
@@ -56,10 +67,44 @@
     </div>
 
     <script>
-        function getCoordinateNumberPerNode() {
-            return $("input[name=coordinatePerNode]:checked","#coordinateParamForm").val();
-        }
 
+        $("select[name=network]").change(function(){
+            var nodeList = $("select[name=node");
+
+            $.ajax({
+                url: "http://"+window.location.host+"/networks/"+getSelectedId("network")+"/nodes",
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(textStatus, errorThrown);
+                },
+                success:  function( data ){
+                    nodeList.empty()
+                    for (var i = 0 ; i < data.length ; i++){
+                        nodeList.append('<option value="'+data[i].id+'">'+data[i ].nodeName+'</option>');
+                    }
+                }
+            });
+        });
+
+        $("select[name=node]" ).change(function(){
+            var initTimeList = $("select[name=initTime");
+
+            $.ajax({
+                url: "http://"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes",
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(textStatus, errorThrown);
+                },
+                success:  function( data ){
+                    initTimeList.empty()
+                    for (var i = 0 ; i < data.length ; i++){
+                        initTimeList.append('<option value="'+data[i].id+'">'+ $.format.date(data[i].initTime,"dd-MM-yyyy HH:mm:ss")+'</option>');
+                    }
+                }
+            });
+        });
+
+        /*
         function getCoordinateList(networkId){
             $.ajax({
                 url: "http://"+window.location.host+"/networks/"+networkId+"/coordinates",
@@ -115,7 +160,8 @@
             chart.draw(dataToPrint, options);
         }
 
-        google.setOnLoadCallback(getCoordinateList(getSelectedId("network")));
+        google.setOnLoadCallback(getCoordinateList(getNetworkSelectedId()));
+        */
     </script>
 
 }

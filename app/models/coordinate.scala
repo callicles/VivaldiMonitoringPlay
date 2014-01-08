@@ -20,28 +20,6 @@ case class Coordinate(id: Long, nodeId: Long, coordinateTime: DateTime, x: BigDe
 
 object Coordinate {
 
-  val coordinateD = {
-    get[Long]("coordinate.id") ~
-    get[Long]("coordinate.nodeId") ~
-    get[DateTime]("coordinate.coordinateTime") ~
-    get[BigDecimal]("coordinate.x") ~
-    get[BigDecimal]("coordinate.y") map {
-      case id~nodeId~coordinateTime~x~y => Coordinate(id, nodeId, coordinateTime, x, y)
-    }
-  }
-
-  def getCoordinateFromNetwork(networkId: Long): List[Coordinate] = DB.withConnection { implicit c =>
-    SQL(
-      """
-        Select d.id,d.nodeId,d.coordinateTime,d.x,d.y from coordinate as d
-        join node as n on n.id = d.nodeId
-        where n.networkId = {networkId}
-      """
-    ).on(
-      "networkId" -> networkId
-    ).as(coordinateD *)
-  }
-
   val coordinate = {
     get[Long]("id") ~
       get[Long]("nodeId") ~
@@ -54,6 +32,12 @@ object Coordinate {
 
   def all(): List[Coordinate] = DB.withConnection { implicit c =>
     SQL("select * from coordinate").as(coordinate *)
+  }
+
+  def getCoordinatesFromNode(nodeId: Long): List[Coordinate] = DB.withConnection{ implicit c =>
+    SQL("select * from coordinate where nodeId = {nodeId}").on(
+      "nodeId" -> nodeId
+    ).as(coordinate *)
   }
 
   def create(nodeId: Long, x: BigDecimal, y: BigDecimal) {
@@ -72,6 +56,28 @@ object Coordinate {
         'id -> id
       ).executeUpdate()
     }
+  }
+
+  val coordinateD = {
+    get[Long]("coordinate.id") ~
+      get[Long]("coordinate.nodeId") ~
+      get[DateTime]("coordinate.coordinateTime") ~
+      get[BigDecimal]("coordinate.x") ~
+      get[BigDecimal]("coordinate.y") map {
+      case id~nodeId~coordinateTime~x~y => Coordinate(id, nodeId, coordinateTime, x, y)
+    }
+  }
+
+  def getCoordinatesFromNetwork(networkId: Long): List[Coordinate] = DB.withConnection { implicit c =>
+    SQL(
+      """
+        Select d.id,d.nodeId,d.coordinateTime,d.x,d.y from coordinate as d
+        join node as n on n.id = d.nodeId
+        where n.networkId = {networkId}
+      """
+    ).on(
+      "networkId" -> networkId
+    ).as(coordinateD *)
   }
 }
 

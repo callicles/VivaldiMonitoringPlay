@@ -5,25 +5,29 @@
 # Home page
 GET           /                                controllers.Application.index
 
+# Node page
+GET           /nodeDetail                      controllers.Application.nodeDetail
+
 # REST API
 
-GET           /networks/                       controllers.REST.networks
-GET           /networks/:id/nodes              controllers.REST.getNodesFromNetwork(id: Long)
-GET           /networks/:id/coordinates        controllers.REST.getLastSavedCoordinatesFromNetwork(id: Long,limit: Int ?= 1)
-POST          /networks/                       controllers.REST.newNetwork
-DELETE        /networks/:id                    controllers.REST.deleteNetwork(id: Long)
+GET           /networks/                       controllers.REST.networkRESTController.networks
+GET           /networks/:id/nodes              controllers.REST.nodeRESTController.getNodesFromNetwork(id: Long)
+GET           /networks/:id/coordinates        controllers.REST.coordinateRESTController.getLastSavedCoordinatesFromNetwork(id: Long,limit: Int ?= 1)
+POST          /networks/                       controllers.REST.networkRESTController.newNetwork
+DELETE        /networks/:id                    controllers.REST.networkRESTController.deleteNetwork(id: Long)
 
-GET           /nodes/                          controllers.REST.nodes
-POST          /nodes/                          controllers.REST.newNodes
-DELETE        /nodes/:id                       controllers.REST.deleteNodes(id: Long)
+GET           /nodes/                          controllers.REST.nodeRESTController.nodes
+GET           /nodes/:id/initTimes             controllers.REST.initTimeRESTController.getInitTimesFromNode(id: Long)
+POST          /nodes/                          controllers.REST.nodeRESTController.newNodes
+DELETE        /nodes/:id                       controllers.REST.nodeRESTController.deleteNodes(id: Long)
 
-GET           /initTimes/                      controllers.REST.initTimes
-POST          /initTimes/                      controllers.REST.newInitTimes
-DELETE        /initTimes/:id                   controllers.REST.deleteInitTimes(id: Long)
+GET           /initTimes/                      controllers.REST.initTimeRESTController.initTimes
+POST          /initTimes/                      controllers.REST.initTimeRESTController.newInitTimes
+DELETE        /initTimes/:id                   controllers.REST.initTimeRESTController.deleteInitTimes(id: Long)
 
-GET           /coordinates/                    controllers.REST.coordinates
-POST          /coordinates/                    controllers.REST.newCoordinates
-DELETE        /coordinates/:id                 controllers.REST.deleteCoordinates(id: Long)
+GET           /coordinates/                    controllers.REST.coordinateRESTController.coordinates
+POST          /coordinates/                    controllers.REST.coordinateRESTController.newCoordinates
+DELETE        /coordinates/:id                 controllers.REST.coordinateRESTController.deleteCoordinates(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path

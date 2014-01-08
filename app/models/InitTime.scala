@@ -19,8 +19,7 @@ case class InitTime(id: Long, nodeId: Long, initTime: DateTime)
 
 object InitTime {
 
-  //TODO how to retrieve timestamp
-  val initTime = {
+  val initTimeT = {
     get[Long]("id") ~
       get[Long]("nodeId") ~
       get[DateTime]("initTime") map {
@@ -28,8 +27,14 @@ object InitTime {
     }
   }
 
+  def getInitTimesFromNode(nodeId: Long): List[InitTime] = DB.withConnection { implicit c =>
+    SQL("select * from initTime where nodeId = {nodeId}").on(
+      "nodeId" -> nodeId
+    ).as(initTimeT *)
+  }
+
   def all(): List[InitTime] = DB.withConnection { implicit c =>
-    SQL("select * from initTime").as(initTime *)
+    SQL("select * from initTime").as(initTimeT *)
   }
 
   def create(nodeId: Long) {
