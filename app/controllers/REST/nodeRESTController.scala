@@ -42,8 +42,9 @@ object nodeRESTController extends Controller {
   }
 
   def getNodesFromNetwork(id: Long) = Action {
-    Node.getNodesFromNetwork(id)
-    Ok("Node retrieved")
+    Ok(Json.toJson(Node.getNodesFromNetwork(id).map{ t =>
+      Json.obj("id" ->t.id,"nodeName" ->t.nodeName, "networkId" ->t.networkId)
+    }))
   }
 
   def deleteNodes (id: Long) = Action {
