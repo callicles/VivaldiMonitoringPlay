@@ -32,7 +32,11 @@
                             <input type="radio" name="coordinatePerNode" value="10" id="nodeCoordRateDix"><label for="nodeCoordRateDix">10</label>
                         </div>
                     </div>
-                    <a class="button radius" onclick="getCoordinateList(getSelectedId('network'))">Generate</a>
+                    <ul class="button-group radius">
+                        <li><a class="button" onclick="getCoordinateList())">Generate</a></li>
+                        <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList)" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
+                    </ul>
+
                 </form>
             </div>
         </div>
@@ -53,9 +57,9 @@
             return $("input[name=coordinatePerNode]:checked","#coordinateParamForm").val();
         }
 
-        function getCoordinateList(networkId){
+        function getCoordinateList(){
             $.ajax({
-                url: "http://"+window.location.host+"/networks/"+networkId+"/coordinates",
+                url: "http://"+window.location.host+"/networks/"+getSelectedId("network")+"/coordinates",
                 data: {"limit": getCoordinateNumberPerNode()},
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
@@ -99,7 +103,7 @@
             chart.draw(dataToPrint, options);
         }
 
-        google.setOnLoadCallback(getCoordinateList(getSelectedId("network")));
+        google.setOnLoadCallback(getCoordinateList);
     </script>
 
 }

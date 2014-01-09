@@ -43,7 +43,10 @@
                             </select>
                         </div>
                     </div>
-                    <a class="button radius" onclick="getNodeCoordinateList()">Generate</a>
+                    <ul class="button-group radius">
+                        <li><a class="button" onclick="getCoordinateList())">Generate</a></li>
+                        <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList); toggleSelectfields();" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
+                    </ul>
                 </form>
             </div>
         </div>
@@ -105,7 +108,7 @@
         });
 
 
-        function getNodeCoordinateList(){
+        function getCoordinateList(){
             $.ajax({
                 url: "http://"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/coordinates",
                 accepts: "application/json",
@@ -113,13 +116,13 @@
                     showError(textStatus, errorThrown);
                 },
                 success:  function( data ){
-                    handleNodeCoordinate(data);
+                    handleCoordinate(data);
                 }
             });
         }
 
 
-        function handleNodeCoordinate(data) {
+        function handleCoordinate(data) {
 
             var date = new Date();
 
@@ -160,7 +163,21 @@
             chartY.draw(dataY, optionsY);
         }
 
-        google.setOnLoadCallback(getNodeCoordinateList);
+        function toggleSelectfields(){
+            console.log("appel");
+            var $icon = $( "#fi-refresh" ),
+            animateClass = "icon-refresh-animate";
+
+            if($icon.hasClass(animateClass)){
+                $("#networkSelect").prop('disabled', 'disabled');
+                $("#nodeSelect" ).prop('disabled', 'disabled');
+            } else{
+                $("#networkSelect" ).prop('disabled', false);
+                $("#nodeSelect" ).prop('disabled', false);
+            }
+        }
+
+        google.setOnLoadCallback(getCoordinateList);
 
     </script>
 

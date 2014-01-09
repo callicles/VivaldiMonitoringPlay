@@ -31,3 +31,22 @@
 #chart_div {
     height: 70vh;
 }
+
+.refreshB{
+    font-size: 0.95rem;
+}
+
+.icon-refresh-animate {
+    -webkit-animation: rotate 1s linear infinite;
+    -moz-animation: rotate 1s linear infinite;
+    -ms-animation: rotate 1s linear infinite;
+    -o-animation: rotate 1s linear infinite;
+
+    display: inline-block;
+}
+
+@-webkit-keyframes rotate {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+

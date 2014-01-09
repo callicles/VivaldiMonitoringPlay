@@ -7,6 +7,8 @@
  */
 google.load("visualization", "1", {packages: ["corechart"]});
 
+var automaticUpdate;
+
 function getSelectedId(object){
     return $("select[name="+object+"]").find(":selected").val();
 }
@@ -22,3 +24,23 @@ function nullArray(length){
     }
     return nullRow;
 }
+
+var automaticUpdate;
+
+function toggleRefresh(toExecute){
+    var $icon = $( "#fi-refresh" ),
+        animateClass = "icon-refresh-animate",
+        $button = $('#refreshButton');
+
+    if($icon.hasClass(animateClass)){
+        $icon.removeClass( animateClass );
+        $button.removeClass( "success" );
+        clearInterval(automaticUpdate);
+    }else {
+        $icon.addClass( animateClass );
+        $button.addClass( "success" );
+        automaticUpdate = setInterval(toExecute,1000);
+    }
+}
+
+
