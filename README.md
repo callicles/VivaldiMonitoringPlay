@@ -128,11 +128,11 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
 ## Configuration and dependencies
 
 By default this play app uses :<br>  
-    - Play 2.2.1 - Scala 
-    - Postgres v9.3
-    - Foundation 5
-    - JQuery
-    - Google Charts
+- Play 2.2.1 - Scala 
+- Postgres v9.3
+- Foundation 5
+- JQuery
+- Google Charts
 
 Play database configuration can be found in 'conf/application.conf'
 The database initialisation script can be found here 'conf/evolutions/default/1.sql'
