@@ -14,7 +14,7 @@ Check the play documentation [here](http://www.playframework.com/documentation/2
 
 ## REST API
 
-IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of any kind : no authentification or query checking ...
+_IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of any kind : no authentification or query checking ...
 
 
 ### Endpoints
@@ -78,7 +78,7 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
 ```Json
     {
         "nodeName": "<yourNodeName>",
-        "networkId": <yourNetworkId>"
+        "networkId": <yourNetworkId>
     }
 ```
 
