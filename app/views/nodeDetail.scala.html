@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <ul class="button-group radius">
-                        <li><a class="button" onclick="getCoordinateList())">Generate</a></li>
+                        <li><a class="button" onclick="getCoordinateList()">Generate</a></li>
                         <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList); toggleSelectfields();" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
                     </ul>
                 </form>
@@ -124,21 +124,22 @@
 
         function handleCoordinate(data) {
 
-            var date = new Date();
+
 
             var dataX = new google.visualization.DataTable();
             var dataY = new google.visualization.DataTable();
 
-            dataX.addColumn('number', 'time');
+            dataX.addColumn('datetime', 'time');
             dataX.addColumn('number', 'X');
 
-            dataY.addColumn('number', 'time');
+            dataY.addColumn('datetime', 'time');
             dataY.addColumn('number', 'Y');
 
             for (var i = 0 ; i<data.length ; i++){
-                date.setTime(data[i].coordinateTime)
-                dataX.addRow([data[i].coordinateTime,data[i].x]);
-                dataY.addRow([data[i].coordinateTime,data[i].y]);
+                var date = new Date();
+                date.setTime(data[i].coordinateTime);
+                dataX.addRow([date,data[i].x]);
+                dataY.addRow([date,data[i].y]);
             }
 
             var optionsX = {
