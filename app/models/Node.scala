@@ -34,6 +34,21 @@ object Node {
     SQL("select * from node").as(node *)
   }
 
+  def getNode(nodeName: String, networkId: Long): Node = {
+     DB.withConnection { implicit c =>
+       val nodes: List[Node] = SQL("select * from node where networkId = {networkId} and nodeName = ({nodeName})").on(
+        "networkId" -> networkId,
+        "nodeName" -> nodeName
+        ).as(node *)
+
+        if(nodes.size == 1){
+          nodes.head
+        } else {
+          null
+        }
+    }
+  }
+
   def create(nodeName: String, networkId: Long) {
     DB.withConnection { implicit c =>
       SQL("insert into node (nodeName, networkId) values ({nodeName}, {networkId})").on(

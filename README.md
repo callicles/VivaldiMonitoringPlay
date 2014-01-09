@@ -108,17 +108,6 @@ DELETE        /coordinates/:id
     }
 ```
 
-    RESPONSE type : JSON
-    payload :
-```Json
-    {
-        "id": 2,
-        "nodeId": 2,
-        "initTime": 1389282041945
-    }
-```
-
-
 
 4. Finaly, to save a calculated coordinate :
 
@@ -131,18 +120,6 @@ DELETE        /coordinates/:id
         "nodeId": <yourNodeId>,
         "x":<x>,
         "y":<y>
-    }
-```
-
-    RESPONSE type : JSON
-    payload :
-```Json
-    {
-        "id": 1,
-        "nodeId": 1,
-        "coordinateTime": 1389282130032,
-        "x": 3,
-        "y": 5
     }
 ```
 

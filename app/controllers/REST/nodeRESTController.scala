@@ -34,7 +34,12 @@ object nodeRESTController extends Controller {
       request.body.validate[(String, Long)].map{
         case (nodeName, networkId) => {
           Node.create(nodeName,networkId)
-          Ok("Node created")
+          val node = Node.getNode(nodeName,networkId)
+          if (node != null){
+            Ok(Json.obj("id" ->node.id,"nodeName" ->node.nodeName, "networkId" ->node.networkId))
+          }else{
+            NotFound
+          }
         }
       }.recoverTotal{
         e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
@@ -49,6 +54,6 @@ object nodeRESTController extends Controller {
 
   def deleteNodes (id: Long) = Action {
     Node.delete(id)
-    Ok("Node Deleted")
+    Ok
   }
 }

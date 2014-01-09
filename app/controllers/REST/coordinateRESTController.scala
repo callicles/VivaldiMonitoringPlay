@@ -33,7 +33,7 @@ object coordinateRESTController extends Controller{
       request.body.validate[(Long, BigDecimal, BigDecimal)].map{
         case (nodeId, x, y) => {
           Coordinate.create(nodeId, x, y)
-          Ok("Coordinate created")
+          Ok
         }
       }.recoverTotal{
         e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
@@ -42,7 +42,7 @@ object coordinateRESTController extends Controller{
 
   def deleteCoordinates (id: Long) = Action {
     Coordinate.delete(id)
-    Ok("Coordinate Deleted")
+    Ok
   }
 
   /**

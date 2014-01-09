@@ -35,7 +35,7 @@ object initTimeRESTController extends Controller{
       request.body.validate[(Long)].map{
         case (nodeId) => {
           InitTime.create(nodeId)
-          Ok("InitNode created")
+          Ok
         }
       }.recoverTotal{
         e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
@@ -44,6 +44,6 @@ object initTimeRESTController extends Controller{
 
   def deleteInitTimes (id: Long) = Action {
     InitTime.delete(id)
-    Ok("InitTime Deleted")
+    Ok
   }
 }

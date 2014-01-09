@@ -27,6 +27,21 @@ object Network {
     SQL("select * from network").as(network *)
   }
 
+  def getNetwork(networkName: String): Network = {
+    DB.withConnection { implicit c =>
+      val networks: List[Network] = SQL("select * from network where (networkName) = ({networkName})").on(
+        "networkName" -> networkName
+      ).as(network *)
+
+      if(networks.size == 1){
+        networks.head
+      } else {
+        null
+      }
+    }
+  }
+
+
   def create(networkName: String) {
     DB.withConnection { implicit c =>
       SQL("insert into network (networkName) values ({networkName})").on(

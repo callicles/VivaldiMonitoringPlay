@@ -26,7 +26,12 @@ object networkRESTController extends Controller{
       request.body.validate[(String)].map{
         case (networkName) => {
           Network.create(networkName)
-          Ok("Network Created")
+          val network = Network.getNetwork(networkName)
+          if (network != null){
+            Ok(Json.obj("id" ->network.id,"networkName" ->network.networkName))
+          }else{
+            NotFound
+          }
         }
       }.recoverTotal{
         e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
@@ -35,6 +40,6 @@ object networkRESTController extends Controller{
 
   def deleteNetwork (id: Long) = Action {
     Network.delete(id)
-    Ok("Network Deleted")
+    Ok
   }
 }
