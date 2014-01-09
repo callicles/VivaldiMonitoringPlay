@@ -12,7 +12,10 @@
 }
 
 .graphHolder{
-    height: 70vh
+    height: 95vh
+}
+.nodeGraphHolder{
+    height: 45vh
 }
 
 .details{

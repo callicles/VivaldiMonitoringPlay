@@ -43,23 +43,23 @@
                             </select>
                         </div>
                     </div>
-                    <a class="button radius" onclick="getCoordinateList(getNetworkSelectedId())">Generate</a>
+                    <a class="button radius" onclick="getNodeCoordinateList()">Generate</a>
                 </form>
             </div>
         </div>
         <div class="large-9 columns">
-            <div class="row graphHolder">
+            <div class="row nodeGraphHolder">
                 <div class="large-12 columns">
-                    <div id="chart_div">
+                    <div id="Xchart_div">
 
                     </div>
-
                 </div>
             </div>
-            <div class="row details">
-                <div class="large-4 columns">
-                    <h3>Details :</h3>
+            <div class="row nodeGraphHolder">
+                <div class="large-12 columns">
+                    <div id="Ychart_div">
 
+                    </div>
                 </div>
             </div>
 
@@ -104,64 +104,64 @@
             });
         });
 
-        /*
-        function getCoordinateList(networkId){
+
+        function getNodeCoordinateList(){
             $.ajax({
-                url: "http://"+window.location.host+"/networks/"+networkId+"/coordinates",
-                data: {"limit": getCoordinateNumberPerNode()},
+                url: "http://"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/coordinates",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
                     showError(textStatus, errorThrown);
                 },
                 success:  function( data ){
-                    handleCoordinate(data);
+                    handleNodeCoordinate(data);
                 }
             });
         }
 
-        function handleCoordinate(data) {
 
-            var matrix = [["x"]];
-            var newRow = [];
+        function handleNodeCoordinate(data) {
 
-            var minX = data[0][0].x;
-            var minY = data[0][0].y;
-            var maxX = data[0][0].x;
-            var maxY = data[0][0].y;
+            var date = new Date();
 
-            for (var i = 0 ; i<data.length ; i ++ ){
-                matrix[0].push("node : "+data[i][0].nodeId);
-            }
+            var dataX = new google.visualization.DataTable();
+            var dataY = new google.visualization.DataTable();
+
+            dataX.addColumn('number', 'time');
+            dataX.addColumn('number', 'X');
+
+            dataY.addColumn('number', 'time');
+            dataY.addColumn('number', 'Y');
 
             for (var i = 0 ; i<data.length ; i++){
-                for (var j = 0 ; j<data[i].length ; j ++){
-                    newRow = nullArray(data.length);
-                    newRow[0] = data[i][j].x;
-                    newRow[i+1] = data[i][j].y;
-                    matrix.push(newRow);
-
-                    minX = (data[i][j].x < minX) ? data[i][j].x : minX ;
-                    minY = (data[i][j].y < minY) ? data[i][j].y : minY ;
-                    maxX = (data[i][j].x > maxX) ? data[i][j].x : maxX ;
-                    maxY = (data[i][j].y > maxY) ? data[i][j].y : maxY ;
-                }
+                date.setTime(data[i].coordinateTime)
+                dataX.addRow([data[i].coordinateTime,data[i].x]);
+                dataY.addRow([data[i].coordinateTime,data[i].y]);
             }
 
-            var dataToPrint = new google.visualization.arrayToDataTable(matrix);
-
-
-            var options = {
-                title: 'Nodes Coordinates',
-                hAxis: {title: 'x', minValue: minX-2, maxValue: maxX+2},
-                vAxis: {title: 'y', minValue: minY-2, maxValue: maxY+2}
+            var optionsX = {
+                title: 'X along time',
+                hAxis: {title: 'time'},
+                vAxis: {title: 'x'},
+                legend: 'none',
+                height: 400
             };
 
-            var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-            chart.draw(dataToPrint, options);
+            var optionsY = {
+                title: 'Y along time',
+                hAxis: {title: 'time'},
+                vAxis: {title: 'y'},
+                legend: 'none',
+                height: 400
+            };
+
+            var chartX = new google.visualization.ScatterChart(document.getElementById('Xchart_div'));
+            chartX.draw(dataX, optionsX);
+            var chartY = new google.visualization.ScatterChart(document.getElementById('Ychart_div'));
+            chartY.draw(dataY, optionsY);
         }
 
-        google.setOnLoadCallback(getCoordinateList(getNetworkSelectedId()));
-        */
+        google.setOnLoadCallback(getNodeCoordinateList);
+
     </script>
 
 }

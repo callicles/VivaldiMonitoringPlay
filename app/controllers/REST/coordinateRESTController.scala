@@ -46,14 +46,15 @@ object coordinateRESTController extends Controller{
   }
 
   /**
-   * This method retrieves the last 'numberOfCoordinatePerNode' coordinates for each node of the network
+   * This method retrieves the last 'numberOfCoordinatePerNode' coordinates for each node of the network.
    * @param networkId reference
    * @param numberOfCoordinatePerNode number of coordinates to retrieve for each node
+   * @return It returns it as a JSON object consisting in an array of array. Coordinates are grouped by nodes
    */
   def getLastSavedCoordinatesFromNetwork(networkId: Long, numberOfCoordinatePerNode: Int) = Action {
     val allNetworkCoordinate = Coordinate.getCoordinatesFromNetwork(networkId)
     val groupedByNode = allNetworkCoordinate.groupBy(_.nodeId)
-    val sortedMap = groupedByNode.mapValues(_.sortBy(_.coordinateTime))
+    val sortedMap = groupedByNode.mapValues(_.sortBy(_.coordinateTime).reverse)
     val listToReturn = sortedMap.mapValues(list => list.take(numberOfCoordinatePerNode)).values
 
     Ok(Json.toJson(listToReturn.map{ l =>
@@ -62,11 +63,31 @@ object coordinateRESTController extends Controller{
     }))
   }
 
+  /**
+   * This method retrieves all the coordinates from a node since the Initialization until the following
+   * initialization.
+   * @param nodeId node reference
+   * @param initTimeId initTime reference
+   * @return a list of coordinates in JSON
+   */
   def getNodesCoordinatesFromInitTime(nodeId: Long, initTimeId: Long) = Action{
-    val coordinates = Coordinate.getCoordinatesFromNode(nodeId)
-    val initTimes = InitTime.getInitTimesFromNode(nodeId).sortBy(_.initTime)
+    val initTimes = InitTime.getInitTimesFromNode(nodeId).sortBy(_.initTime).toList
+    val initTimeRef = initTimes.find(i => i.id == initTimeId).head
 
+    val coordinates = Coordinate.getCoordinatesFromNode(nodeId).dropWhile((c) => (c.coordinateTime.getMillis <= initTimeRef.initTime.getMillis))
+    val inter =  coordinates.sortBy(_.coordinateTime).toList
 
-    Ok("")
+    if (initTimes.last.id == initTimeId){
+      Ok(Json.toJson(inter.map{ t =>
+        Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x.floatValue(), "y" ->t.y.floatValue())
+      }))
+    } else {
+      val postInit = initTimes.dropWhile(c => (c.initTime.getMillis <= initTimeRef.initTime.getMillis)).head
+      val cutCoordinates = inter.takeWhile(c => (c.coordinateTime.getMillis < postInit.initTime.getMillis))
+
+      Ok(Json.toJson(cutCoordinates.map{ t =>
+        Json.obj("id" ->t.id,"nodeId" ->t.nodeId, "coordinateTime" ->t.coordinateTime, "x" ->t.x.floatValue(), "y" ->t.y.floatValue())
+      }))
+    }
   }
 }
