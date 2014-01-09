@@ -46,9 +46,9 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
 
     To register a network :
 
-    REQUEST type: `POST` 
-    adress: `networks` 
-    header: `content-type: application/json` 
+    REQUEST type: `POST` <br> 
+    adress: `networks` <br> 
+    header: `content-type: application/json`<br>  
     payload:
 ```Json
     {
@@ -56,7 +56,7 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
     }
 ```
 
-    RESPONSE type : `JSON`
+    RESPONSE type : `JSON`<br> 
     payload :
 ```Json
     {
@@ -71,9 +71,9 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
 
     To register a node :
 
-    REQUEST type: `POST`
-    adress: `/nodes/`
-    header: `content-type: application/json`
+    REQUEST type: `POST`<br> 
+    adress: `/nodes/`<br> 
+    header: `content-type: application/json`<br> 
     payload:
 ```Json
     {
@@ -82,7 +82,7 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
     }
 ```
 
-    RESPONSE type : `JSON`
+    RESPONSE type : `JSON`<br> 
     payload :
 ```Json
     {
@@ -98,9 +98,9 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
 
     To register an initialization time :
 
-    REQUEST type : `POST`
-    adress: `/initTimes/`
-    header: `content-type: application/json`
+    REQUEST type : `POST`<br> 
+    adress: `/initTimes/`<br> 
+    header: `content-type: application/json`<br> 
     payload:
 ```Json
     {
@@ -111,9 +111,9 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
 
 4. Finaly, to save a calculated coordinate :
 
-    REQUEST type : `POST`
-    adress: `/coordinates/`
-    header: `content-type: application/json`
+    REQUEST type : `POST`<br> 
+    adress: `/coordinates/`<br> 
+    header: `content-type: application/json` <br> 
     payload:
 ```Json
     {
@@ -127,12 +127,12 @@ IMPORTANT NOTE : As for now the POSTing endpoints do not have a protection of an
 
 ## Configuration and dependencies
 
-By default this play app uses : 
-    *Play 2.2.1 - Scala 
-    * Postgres v9.3
-    * Foundation 5
-    * JQuery
-    * Google Charts
+By default this play app uses :<br>  
+    - Play 2.2.1 - Scala 
+    - Postgres v9.3
+    - Foundation 5
+    - JQuery
+    - Google Charts
 
 Play database configuration can be found in 'conf/application.conf'
 The database initialisation script can be found here 'conf/evolutions/default/1.sql'
