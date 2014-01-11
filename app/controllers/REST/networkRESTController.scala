@@ -3,6 +3,7 @@ package controllers.REST
 import play.api.mvc._
 import play.api.libs.json._
 import models._
+import scala.xml.Utility
 
 
 /**
@@ -15,7 +16,7 @@ import models._
 object networkRESTController extends Controller{
   def networks = Action {
     Ok(Json.toJson(Network.all().map{ t =>
-      Json.obj("id" ->t.id,"networkName" ->t.networkName)
+      Json.obj("id" ->t.id,"networkName" ->Utility.escape(t.networkName))
     }))
   }
 
@@ -28,7 +29,7 @@ object networkRESTController extends Controller{
           Network.create(networkName)
           val network = Network.getNetwork(networkName)
           if (network != null){
-            Ok(Json.obj("id" ->network.id,"networkName" ->network.networkName))
+            Ok(Json.obj("id" ->network.id,"networkName" ->Utility.escape(network.networkName)))
           }else{
             NotFound
           }

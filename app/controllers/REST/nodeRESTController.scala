@@ -6,6 +6,7 @@ import play.api.libs.functional.syntax._
 import models._
 import utils.Joda._
 import java.math.BigDecimal
+import scala.xml.Utility
 
 
 /**
@@ -19,7 +20,7 @@ import java.math.BigDecimal
 object nodeRESTController extends Controller {
   def nodes = Action {
     Ok(Json.toJson(Node.all().map{ t =>
-      Json.obj("id" ->t.id,"nodeName" ->t.nodeName, "networkId" ->t.networkId)
+      Json.obj("id" ->t.id,"nodeName" ->Utility.escape(t.nodeName), "networkId" ->t.networkId)
     }))
   }
 
@@ -36,7 +37,7 @@ object nodeRESTController extends Controller {
           Node.create(nodeName,networkId)
           val node = Node.getNode(nodeName,networkId)
           if (node != null){
-            Ok(Json.obj("id" ->node.id,"nodeName" ->node.nodeName, "networkId" ->node.networkId))
+            Ok(Json.obj("id" ->node.id,"nodeName" ->Utility.escape(node.nodeName), "networkId" ->node.networkId))
           }else{
             NotFound
           }
@@ -48,7 +49,7 @@ object nodeRESTController extends Controller {
 
   def getNodesFromNetwork(id: Long) = Action {
     Ok(Json.toJson(Node.getNodesFromNetwork(id).map{ t =>
-      Json.obj("id" ->t.id,"nodeName" ->t.nodeName, "networkId" ->t.networkId)
+      Json.obj("id" ->t.id,"nodeName" ->Utility.escape(t.nodeName), "networkId" ->t.networkId)
     }))
   }
 

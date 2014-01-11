@@ -7,6 +7,7 @@ import models._
 import utils.Joda._
 import java.math.BigDecimal
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: Nicolas
