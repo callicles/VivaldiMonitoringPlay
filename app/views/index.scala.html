@@ -14,31 +14,33 @@
                 </dl>
             </div>
             <div class="row">
-                <form id="coordinateParamForm">
-                    <div class="row collapse">
-                        <label>Network :</label>
-                        <div class="large-12 columns">
+                <div class="large-12 columns">
+                    <form id="coordinateParamForm">
+                        <div class="row collapse">
+                            <label>Network :</label>
+                            <div class="large-12 columns">
 
-                            <select name="network" id="networkSelect">
-                                @for(network <- Network.all()){
-                                    <option value="@network.id">@network.networkName</option>
-                                }
-                            </select>
+                                <select name="network" id="networkSelect">
+                                    @for(network <- Network.all()){
+                                        <option value="@network.id">@network.networkName</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Coordinates/node :</label>
-                            <input type="radio" name="coordinatePerNode" value="1" id="nodeCoordRateUn" checked><label for="nodeCoordRateUn">1</label>
-                            <input type="radio" name="coordinatePerNode" value="10" id="nodeCoordRateDix"><label for="nodeCoordRateDix">10</label>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Coordinates/node :</label>
+                                <input type="radio" name="coordinatePerNode" value="1" id="nodeCoordRateUn" checked><label for="nodeCoordRateUn">1</label>
+                                <input type="radio" name="coordinatePerNode" value="10" id="nodeCoordRateDix"><label for="nodeCoordRateDix">10</label>
+                            </div>
                         </div>
-                    </div>
-                    <ul class="button-group radius">
-                        <li><a class="button" onclick="getCoordinateList()">Generate</a></li>
-                        <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList)" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
-                    </ul>
+                        <ul class="button-group radius">
+                            <li><a class="button" onclick="getCoordinateList()">Generate</a></li>
+                            <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList)" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
+                        </ul>
 
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="large-9 columns">

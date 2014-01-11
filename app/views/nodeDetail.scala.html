@@ -12,42 +12,44 @@
                 </dl>
             </div>
             <div class="row">
-                <form id="coordinateParamForm">
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Network :</label>
-                            <select name="network" id="networkSelect">
-                            @for(network <- networks){
-                                <option value="@network.id">@network.networkName</option>
-                            }
-                            </select>
+                <div class="large-12 columns">
+                    <form id="coordinateParamForm">
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Network : <i id="networkLock"></i></label>
+                                <select name="network" id="networkSelect">
+                                @for(network <- networks){
+                                    <option value="@network.id">@network.networkName</option>
+                                }
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Node :</label>
-                            <select name="node" id="nodeSelect">
-                            @for(node <- nodes){
-                                <option value="@node.id">@node.nodeName</option>
-                            }
-                            </select>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Node :  <i id="nodeLock"></i></label>
+                                <select name="node" id="nodeSelect">
+                                @for(node <- nodes){
+                                    <option value="@node.id">@node.nodeName</option>
+                                }
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Initialization Time :</label>
-                            <select name="initTime" id="initTimeSelect">
-                            @for(initTime <- initTimes){
-                                <option value="@initTime.id">@initTime.initTime.toString("dd-MM-yyyy HH:mm:ss")</option>
-                            }
-                            </select>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Initialization Time :</label>
+                                <select name="initTime" id="initTimeSelect">
+                                @for(initTime <- initTimes){
+                                    <option value="@initTime.id">@initTime.initTime.toString("dd-MM-yyyy HH:mm:ss")</option>
+                                }
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <ul class="button-group radius">
-                        <li><a class="button" onclick="getCoordinateList()">Generate</a></li>
-                        <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList); toggleSelectfields();" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
-                    </ul>
-                </form>
+                        <ul class="button-group radius">
+                            <li><a class="button" onclick="getCoordinateList()">Generate</a></li>
+                            <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList); toggleSelectfields();" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
+                        </ul>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="large-9 columns">
@@ -177,9 +179,15 @@
             if($icon.hasClass(animateClass)){
                 $("#networkSelect").prop('disabled', 'disabled');
                 $("#nodeSelect" ).prop('disabled', 'disabled');
+                $("#nodeLock" ).addClass("fi-lock");
+                $("#networkLock" ).addClass("fi-lock");
+
             } else{
                 $("#networkSelect" ).prop('disabled', false);
                 $("#nodeSelect" ).prop('disabled', false);
+                $("#nodeLock" ).removeClass();
+                $("#networkLock" ).removeClass();
+
             }
         }
 
