@@ -32,8 +32,31 @@
             </ul>
 
             <section class="top-bar-section">
+                <ul class="right">
+                    <li class="has-form">
+                        <button href="#" class="button" id="addNetworkButton" data-reveal-id="networkModal"><i class="fi-plus"></i> Add Network</button>
+                    </li>
+                </ul>
             </section>
         </nav>
+
+        <div id="networkModal" class="reveal-modal tiny" data-reveal>
+            <h2>Add Network</h2>
+            <p class="lead">Create a network to register coordinates</p>
+            <div id="addNetworkModalContent">
+                <form data-abide>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Network Name : <small>required</small></label>
+                            <input id="newNetworkName" type="text" placeholder="" required pattern="[a-zA-Z]+"/>
+                            <small class="error">Characters allowed : [a-zA-Z].</small>
+                            <a href="#" class="button" onclick="createNetwork()">Create</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <a class="close-reveal-modal">&#215;</a>
+        </div>
 
         <div id="notifications">
 

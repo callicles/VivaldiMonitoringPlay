@@ -15,9 +15,10 @@
             </div>
             <div class="row">
                 <form id="coordinateParamForm">
-                    <div class="row">
+                    <div class="row collapse">
+                        <label>Network :</label>
                         <div class="large-12 columns">
-                            <label>Network :</label>
+
                             <select name="network" id="networkSelect">
                                 @for(network <- Network.all()){
                                     <option value="@network.id">@network.networkName</option>
