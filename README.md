@@ -10,7 +10,7 @@ This is a play 2.2.1 scala application for monitoring Vivaldi coordinates genera
 
 Check the play documentation [here](http://www.playframework.com/documentation/2.2.1/Production)
 
-
+[Here](http://vivaldi-monitoring-demo.herokuapp.com/) is a running demo
 
 ## REST API
 
