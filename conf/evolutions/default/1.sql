@@ -2,7 +2,7 @@
 
 CREATE TABLE network (
     id bigserial PRIMARY KEY NOT NULL,
-    networkName varchar(255)
+    networkName varchar(255) UNIQUE
 );
 
 INSERT INTO network (networkName) VALUES ('default');
@@ -11,14 +11,15 @@ CREATE TABLE node (
     id bigserial PRIMARY KEY NOT NULL,
     nodeName varchar(255),
     networkId integer NOT NULL,
-    FOREIGN KEY (networkId) REFERENCES network(id)
+    UNIQUE (nodeName, networkId),
+    FOREIGN KEY (networkId) REFERENCES network(id) ON DELETE CASCADE
 );
 
 CREATE TABLE initTime (
     id bigserial PRIMARY KEY NOT NULL,
     nodeId integer NOT NULL,
     initTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (nodeId) REFERENCES node(id)
+    FOREIGN KEY (nodeId) REFERENCES node(id) ON DELETE CASCADE
 );
 
 CREATE TABLE coordinate (
@@ -27,7 +28,7 @@ CREATE TABLE coordinate (
     coordinateTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     x decimal,
     y decimal,
-    FOREIGN KEY (nodeId) REFERENCES node(id)
+    FOREIGN KEY (nodeId) REFERENCES node(id) ON DELETE CASCADE
 );
 
 # --- !Downs
