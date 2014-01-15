@@ -7,14 +7,16 @@
  */
 google.load("visualization", "1", {packages: ["corechart"]});
 
-var automaticUpdate;
-
 function getSelectedId(object){
     return $("select[name="+object+"]").find(":selected").val();
 }
 
 function showError(content, status,errorToShow){
     $("#notifications").append('<div data-alert class="alert-box warning">'+status+" :"+errorToShow+' - '+content+'<a href="#" class="close">&times;</a> </div>');
+    $(document).foundation();
+}
+function showSuccess(successText){
+    $("#notifications").append('<div data-alert class="alert-box success">'+successText+'<a href="#" class="close">&times;</a> </div>');
     $(document).foundation();
 }
 
@@ -47,13 +49,21 @@ function showNetworkData(data){
     var modal = $("#addNetworkModalContent");
     modal.before('<div data-alert class="alert-box success radius">Network created : {id:'+data.id+', networkName: '+data.networkName+'}<a href="#" class="close">&times;</a></div>');
     $(document).foundation();
-    updateNetworkList();
+    fetchNetworkList(updateNetworkList);
 }
 
-function updateNetworkList(){
+function updateNetworkList(data){
     var networkList = $("select[name=network]");
     var selectedNetwork = getSelectedId("network");
 
+    networkList.empty()
+    for (var i = 0 ; i < data.length ; i++){
+        networkList.append('<option value="'+data[i].id+'">'+data[i].networkName+'</option>');
+    }
+    networkList.find("[value="+selectedNetwork+"]").first().prop("selected",true);
+}
+
+function fetchNetworkList(callback){
     $.ajax({
         url: location.protocol+"//"+window.location.host+"/networks/",
         accepts: "application/json",
@@ -61,13 +71,26 @@ function updateNetworkList(){
             showError(textStatus, errorThrown);
         },
         success:  function( data ){
-            networkList.empty()
-            for (var i = 0 ; i < data.length ; i++){
-                networkList.append('<option value="'+data[i].id+'">'+data[i].networkName+'</option>');
-            }
-            networkList.find("[value="+selectedNetwork+"]").first().prop("selected",true);
+            callback(data)
         }
     });
+}
+
+function deleteNetworks(networks){
+    for (var i = 1 ; i<networks.length ; i++){
+        $.ajax({
+            type: "DELETE",
+            url: location.protocol+"//"+window.location.host+"/networks/"+networks[i].id,
+            accepts: "application/json",
+            error: function( jqXHR, textStatus, errorThrown ){
+                showError(textStatus, errorThrown);
+            },
+            success:  function(data){
+                fetchNetworkList(updateNetworkList);
+                showSuccess('Database cleaned up !');
+            }
+        });
+    }
 }
 
 var automaticUpdate;

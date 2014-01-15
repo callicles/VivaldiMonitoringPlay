@@ -34,7 +34,10 @@
             <section class="top-bar-section">
                 <ul class="right">
                     <li class="has-form">
-                        <button href="#" class="button" id="addNetworkButton" data-reveal-id="networkModal"><i class="fi-plus"></i> Add Network</button>
+                        <ul class="button-group radius">
+                            <li><button class="button" id="addNetworkButton" data-reveal-id="networkModal"><i class="fi-plus"></i> Add Network</button></li>
+                            <li><button class="button alert" id="deleteNetworkButton" onclick="fetchNetworkList(deleteNetworks)" ><i class="fi-x"></i> Empty database</button></li>
+                        </ul>
                     </li>
                 </ul>
             </section>
