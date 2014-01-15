@@ -77,7 +77,7 @@
             var nodeList = $("select[name=node");
 
             $.ajax({
-                url: "http://"+window.location.host+"/networks/"+getSelectedId("network")+"/nodes",
+                url: location.protocol+"//"+window.location.host+"/networks/"+getSelectedId("network")+"/nodes",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
                     showError(textStatus, errorThrown);
@@ -100,7 +100,7 @@
             var initTimeList = $("select[name=initTime");
 
             $.ajax({
-                url: "http://"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes",
+                url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
                     showError(textStatus, errorThrown);
@@ -117,7 +117,7 @@
 
         function getCoordinateList(){
             $.ajax({
-                url: "http://"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/coordinates",
+                url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/coordinates",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
                     showError(textStatus, errorThrown);

@@ -64,7 +64,7 @@
 
         function getCoordinateList(){
             $.ajax({
-                url: "http://"+window.location.host+"/networks/"+getSelectedId("network")+"/coordinates",
+                url: location.protocol+"//"+window.location.host+"/networks/"+getSelectedId("network")+"/coordinates",
                 data: {"limit": getCoordinateNumberPerNode()},
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){

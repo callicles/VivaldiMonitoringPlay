@@ -30,7 +30,7 @@ function createNetwork(){
     var networkName =  $("#newNetworkName").val()
     $.ajax({
         type: "POST",
-        url: "http://"+window.location.host+"/networks/",
+        url: location.protocol+"//"+window.location.host+"/networks/",
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({"networkName": networkName}),
@@ -55,7 +55,7 @@ function updateNetworkList(){
     var selectedNetwork = getSelectedId("network");
 
     $.ajax({
-        url: "http://"+window.location.host+"/networks/",
+        url: location.protocol+"//"+window.location.host+"/networks/",
         accepts: "application/json",
         error: function( jqXHR, textStatus, errorThrown ){
             showError(textStatus, errorThrown);
