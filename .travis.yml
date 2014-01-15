@@ -5,3 +5,10 @@ before_script:
 - wget http://downloads.typesafe.com/play/${PLAY_VERSION}/play-${PLAY_VERSION}.zip
 - unzip -q play-${PLAY_VERSION}.zip
 script: play-${PLAY_VERSION}/play test
+deploy:
+  provider: heroku
+  api_key:
+    secure: V89s1mdhl3wPhebOandlPYmXIol7pVr0iFf8gtoryiiX9iO8rB1k0Sq7bMt37+Sk8Em/vzI5jLL5a6Z8r/YeZHA6WFi7s5Hder02UIYIOwiPfMS/o7WLoijtXwZ0DYQqGSWrTdAZ2UaGcRDNO5H8CI8OP6L5pWuyA+0+gSWwNww=
+  app: vivaldi-monitoring-demo
+  on:
+    repo: callicles/VivaldiMonitoringPlay
