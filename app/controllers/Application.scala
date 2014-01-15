@@ -14,9 +14,13 @@ object Application extends Controller {
 
     val networks = Network.all();
     val nodes = Node.getNodesFromNetwork(networks.head.id)
-    val initTimes = InitTime.getInitTimesFromNode(nodes.head.id)
-
-    Ok(views.html.nodeDetail(networks,nodes,initTimes))
+    if (!nodes.isEmpty){
+      val initTimes = InitTime.getInitTimesFromNode(nodes.head.id)
+      Ok(views.html.nodeDetail(networks,nodes,initTimes))
+    }else{
+      val initTimes = List[InitTime]()
+      Ok(views.html.nodeDetail(networks,nodes,initTimes))
+    }
   }
 
 }
