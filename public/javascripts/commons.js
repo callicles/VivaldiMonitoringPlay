@@ -87,10 +87,10 @@ function deleteNetworks(networks){
             },
             success:  function(data){
                 fetchNetworkList(updateNetworkList);
-                showSuccess('Database cleaned up !');
             }
         });
     }
+    showSuccess('Database cleaned up !');
 }
 
 var automaticUpdate;

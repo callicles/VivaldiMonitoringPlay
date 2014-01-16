@@ -71,18 +71,18 @@
                     showError(textStatus, errorThrown);
                 },
                 success:  function( data ){
-                    handleCoordinate(data);
+                    handleCoordinates(data);
                 }
             });
         }
 
-        function handleCoordinate(data) {
+        function handleCoordinates(data) {
 
             var matrix = [["x"]];
             var newRow = [];
 
             for (var i = 0 ; i<data.length ; i ++ ){
-                matrix[0].push("node : "+data[i][0 ].nodeName);
+                matrix[0].push("node : "+data[i][0].id);
             }
 
             for (var i = 0 ; i<data.length ; i++){
