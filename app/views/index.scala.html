@@ -37,8 +37,8 @@
                             </div>
                         </div>
                         <ul class="button-group radius">
-                            <li><a class="button" onclick="getCoordinateList()">Generate</a></li>
-                            <li><a class="button" id="refreshButton" onclick="toggleRefresh(getCoordinateList)" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
+                            <li><a class="button" onclick="getNodeList()">Generate</a></li>
+                            <li><a class="button" id="refreshButton" onclick="toggleRefresh(getNodeList)" ><i id="fi-refresh" class="refreshB fi-refresh"></i></a></li>
                         </ul>
 
                     </form>
@@ -62,27 +62,49 @@
             return $("input[name=coordinatePerNode]:checked","#coordinateParamForm").val();
         }
 
-        function getCoordinateList(){
+        function getNodeList(){
+            $.ajax({
+                url: location.protocol+"//"+window.location.host+"/networks/"+getSelectedId("network")+"/nodes",
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(jqXHR, textStatus, errorThrown);
+                },
+                success:  function(data){
+                    getCoordinateList(data);
+                }
+            });
+        }
+
+        function getCoordinateList(nodeList){
             $.ajax({
                 url: location.protocol+"//"+window.location.host+"/networks/"+getSelectedId("network")+"/coordinates",
                 data: {"limit": getCoordinateNumberPerNode()},
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
-                    showError(textStatus, errorThrown);
+                    showError(jqXHR,textStatus, errorThrown);
                 },
-                success:  function( data ){
-                    handleCoordinates(data);
+                success:  function(data){
+                    handleCoordinates(data,nodeList);
                 }
             });
         }
 
-        function handleCoordinates(data) {
+        function getNodeName(nodeList, id){
+            for (var i = 0 ; i< nodeList.length ; i++){
+                if (nodeList[i].id == id){
+                    return ""+nodeList[i].nodeName;
+                }
+            }
+            return "name not found";
+        }
+
+        function handleCoordinates(data,nodeList) {
 
             var matrix = [["x"]];
             var newRow = [];
 
             for (var i = 0 ; i<data.length ; i ++ ){
-                matrix[0].push("node : "+data[i][0].id);
+                matrix[0].push("node : "+getNodeName(nodeList,data[i][0].nodeId));
             }
 
             for (var i = 0 ; i<data.length ; i++){
@@ -108,7 +130,7 @@
             chart.draw(dataToPrint, options);
         }
 
-        google.setOnLoadCallback(getCoordinateList);
+        google.setOnLoadCallback(getNodeList);
     </script>
 
 }
