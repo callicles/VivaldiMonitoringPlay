@@ -68,7 +68,7 @@ function fetchNetworkList(callback){
         url: location.protocol+"//"+window.location.host+"/networks/",
         accepts: "application/json",
         error: function( jqXHR, textStatus, errorThrown ){
-            showError(textStatus, errorThrown);
+            showError(jqXHR.responseText,textStatus, errorThrown);
         },
         success:  function( data ){
             callback(data)
@@ -77,20 +77,38 @@ function fetchNetworkList(callback){
 }
 
 function deleteNetworks(networks){
+    var results= [];
+
     for (var i = 1 ; i<networks.length ; i++){
-        $.ajax({
-            type: "DELETE",
-            url: location.protocol+"//"+window.location.host+"/networks/"+networks[i].id,
-            accepts: "application/json",
-            error: function( jqXHR, textStatus, errorThrown ){
-                showError(textStatus, errorThrown);
-            },
-            success:  function(data){
-                fetchNetworkList(updateNetworkList);
-            }
-        });
+        results.push(
+            $.ajax({
+                type: "DELETE",
+                url: location.protocol+"//"+window.location.host+"/networks/"+networks[i].id,
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(jqXHR.responseText,textStatus, errorThrown);
+                }
+            })
+        );
     }
-    showSuccess('Database cleaned up !');
+
+    $.when.apply(this, results).done(function() {
+
+        var success = true;
+        for(var i=0;i<arguments.length;i++){
+            if(arguments[i][1] != "success"){
+                success = false;
+            }
+            if(arguments[1] == "success"){
+                success=true;
+            }
+        }
+
+        if (success){
+            fetchNetworkList(updateNetworkList);
+            showSuccess('Database cleaned up !');
+        }
+    });
 }
 
 var automaticUpdate;
