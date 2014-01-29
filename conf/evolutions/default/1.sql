@@ -31,7 +31,20 @@ CREATE TABLE coordinate (
     FOREIGN KEY (nodeId) REFERENCES node(id) ON DELETE CASCADE
 );
 
+CREATE TABLE closeNode (
+    id bigserial PRIMARY KEY NOT NULL,
+    localNodeId integer NOT NULL,
+    distantNodeId integer NOT NULL,
+    logTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    distance decimal,
+    UNIQUE (distantNodeId,localNodeId, logTime),
+    FOREIGN KEY (distantNodeId) REFERENCES node(id) ON DELETE CASCADE,
+    FOREIGN KEY (localNodeId) REFERENCES node(id) ON DELETE CASCADE
+);
+
 # --- !Downs
+
+DROP TABLE closeNode;
 
 DROP TABLE coordinate;
 
