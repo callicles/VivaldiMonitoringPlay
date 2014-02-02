@@ -6,6 +6,7 @@ import play.api.libs.functional.syntax._
 import models._
 import utils.Joda._
 import java.math.BigDecimal
+import org.joda.time.DateTime
 
 
 /**
@@ -39,6 +40,22 @@ object closeNodeRESTController extends Controller{
       }.recoverTotal{
         e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
       }
+  }
+
+  def newCloseNodesFromArray = Action(parse.json) {
+
+    val logTime = DateTime.now()
+
+    request =>
+      request.body.validate[(List[SimpleCloseNode])].map{
+        nodes =>{
+          nodes.foreach(n => CloseNode.create(n.localNodeId, n.distantNodeId, n.distance, logTime))
+          Ok
+        }
+      }.recoverTotal{
+        e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
+      }
+
   }
 
   def deleteCoordinates (id: Long) = Action {

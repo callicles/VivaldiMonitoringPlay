@@ -37,7 +37,6 @@ CREATE TABLE closeNode (
     distantNodeId integer NOT NULL,
     logTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     distance decimal,
-    UNIQUE (distantNodeId,localNodeId, logTime),
     FOREIGN KEY (distantNodeId) REFERENCES node(id) ON DELETE CASCADE,
     FOREIGN KEY (localNodeId) REFERENCES node(id) ON DELETE CASCADE
 );

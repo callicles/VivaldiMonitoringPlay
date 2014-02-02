@@ -32,6 +32,7 @@ DELETE        /coordinates/:id                                    controllers.RE
 
 GET           /closeNodes/                                        controllers.REST.closeNodeRESTController.closeNodes
 POST          /closeNodes/                                        controllers.REST.closeNodeRESTController.newCloseNode
+POST          /closeNodes/list                                    controllers.REST.closeNodeRESTController.newCloseNodesFromArray
 DELETE        /closeNodes/:id                                     controllers.REST.closeNodeRESTController.deleteCoordinates(id: Long)
 
 

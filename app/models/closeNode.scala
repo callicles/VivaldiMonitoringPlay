@@ -8,6 +8,9 @@ import play.api.Play.current
 import utils.AnormExtension._
 import org.joda.time.DateTime
 import java.math.BigDecimal
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +19,12 @@ import java.math.BigDecimal
  * Time: 14:31
  * To change this template use File | Settings | File Templates.
  */
+case class SimpleCloseNode(localNodeId: Long, distantNodeId: Long, distance: BigDecimal)
+
+object SimpleCloseNode {
+  implicit val simpleCloseNodeReads: Reads[SimpleCloseNode] = Json.reads[SimpleCloseNode]
+}
+
 case class CloseNode(id: Long, localNodeId: Long, distantNodeId: Long, logTime: DateTime, distance: BigDecimal)
 
 object CloseNode {
@@ -46,6 +55,17 @@ object CloseNode {
         'localNodeId -> localNodeId,
         'distantNodeId -> distantNodeId,
         'distance -> distance
+      ).executeUpdate()
+    }
+  }
+
+  def create(localNodeId: Long, distantNodeId: Long, distance: BigDecimal, logTime: DateTime) {
+    DB.withConnection { implicit c =>
+      SQL("insert into closeNode (localNodeId,distantNodeId,distance,logTime) values ({localNodeId},{distantNodeId},{distance},{logTime})").on(
+        'localNodeId -> localNodeId,
+        'distantNodeId -> distantNodeId,
+        'distance -> distance,
+        'logTime -> logTime
       ).executeUpdate()
     }
   }
