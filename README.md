@@ -26,7 +26,8 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
 ### Endpoints
 
     GET           /networks/
-    GET           /networks/:id/nodes                                 
+    GET           /networks/:id/nodes
+    GET           /networks/:id/nodes/:nodeName                                 
     GET           /networks/:id/coordinates
     POST          /networks/                                         
     DELETE        /networks/:id                                     

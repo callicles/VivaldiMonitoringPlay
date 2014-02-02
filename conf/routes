@@ -12,6 +12,7 @@ GET           /nodeDetail                                         controllers.Ap
 
 GET           /networks/                                          controllers.REST.networkRESTController.networks
 GET           /networks/:id/nodes                                 controllers.REST.nodeRESTController.getNodesFromNetwork(id: Long)
+GET           /networks/:id/nodes/:nodeName                       controllers.REST.nodeRESTController.getNode(id: Long, nodeName: String)
 GET           /networks/:id/coordinates                           controllers.REST.coordinateRESTController.getLastSavedCoordinatesFromNetwork(id: Long,limit: Int ?= 1)
 POST          /networks/                                          controllers.REST.networkRESTController.newNetwork
 DELETE        /networks/:id                                       controllers.REST.networkRESTController.deleteNetwork(id: Long)

@@ -53,6 +53,11 @@ object nodeRESTController extends Controller {
     }))
   }
 
+  def getNode(networkId: Long, nodeName: String) = Action {
+    val node = Node.getNode(nodeName,networkId)
+    Ok(Json.obj("id" ->node.id,"nodeName" ->Utility.escape(node.nodeName), "networkId" ->node.networkId))
+  }
+
   def deleteNodes (id: Long) = Action {
     Node.delete(id)
     Ok
