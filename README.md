@@ -12,6 +12,12 @@ Check the play documentation [here](http://www.playframework.com/documentation/2
 
 [Here](http://vivaldi-monitoring-demo.herokuapp.com/) is a running demo
 
+## Test
+
+To test this app there is a data generator provided in the `PythonDummyDataGenerator` folder. To use it, you just have to configure the settings file with the adress where you are deploying this app.
+
+Then you just have to execute. It will clean the dataBase and create a `Python Network` with dummy data in it.
+
 ## REST API
 
 _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of any kind : no authentification or query checking ...
@@ -37,7 +43,12 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
     
     GET           /coordinates/                                       
     POST          /coordinates/                                      
-    DELETE        /coordinates/:id 
+    DELETE        /coordinates/:id
+    
+    GET           /closeNodes/                                        
+    POST          /closeNodes/                                        
+    POST          /closeNodes/list                                    
+    DELETE        /closeNodes/:id                                     
 
 
 ### How to use to monitor a vivaldi network
@@ -123,7 +134,26 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
     }
 ```
 
+5. You can also save the close node generated list:
 
+    REQUEST type : `POST`<br> 
+    adress: `/closeNodes/list`<br> 
+    header: `content-type: application/json` <br> 
+    payload:
+```Json
+    [
+        {
+            "localNodeId": <yourLocalNodeId1>,
+            "distantNodeId": <yourDistantNodeId1>,
+            "distance": <distance>
+        },
+        {
+            "localNodeId": <yourLocalNodeId2>,
+            "distantNodeId": <yourDistantNodeId2>,
+            "distance": <distance>
+        }
+    ]
+```
 
 ## Configuration and dependencies
 
