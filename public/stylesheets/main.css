@@ -1,11 +1,15 @@
+html, body { height: 100%; }
+
 .row.full-width {
     width: 100%;
     max-width: 100%;
 }
 
 .sidebar{
+    top: 45px;
+    position: absolute;
     background-color: #E9E9E7;
-    height: 95vh;
+    min-height: 1600px;
     padding-top: 15px;
     padding-left: 30px;
     padding-right: 30px;

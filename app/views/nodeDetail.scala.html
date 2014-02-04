@@ -68,10 +68,22 @@
                 </div>
             </div>
 
+            <div class="row nodeGraphHolder">
+                <div class="large-12 columns">
+                    <div id="bubbleChart_div">
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
+
+        /* ==============================================================================
+                                        Navigation update
+           ============================================================================== */
 
         $("select[name=network]").change(function(){
             var nodeList = $("select[name=node");
@@ -114,6 +126,10 @@
             });
         }
 
+        /* ==============================================================================
+                                    Coordinates graphs generation
+           ============================================================================== */
+
 
         function getCoordinateList(){
             $.ajax({
@@ -130,8 +146,6 @@
 
 
         function handleCoordinate(data) {
-
-
 
             var dataX = new google.visualization.DataTable();
             var dataY = new google.visualization.DataTable();
@@ -191,7 +205,60 @@
             }
         }
 
-        google.setOnLoadCallback(getCoordinateList);
+        /* ==============================================================================
+                                    Bubble Graph Generation
+           ============================================================================== */
+
+
+        function getBubblesList(){
+            $.ajax({
+                url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/bubbles",
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(textStatus, errorThrown);
+                },
+                success:  function( data ){
+                    handleBubbles(data);
+                }
+            });
+        }
+
+        function handleBubbles(data) {
+
+            var bubbles = new google.visualization.DataTable();
+
+            bubbles.addColumn('string','ID');
+            bubbles.addColumn('number','Position');
+            bubbles.addColumn('number','Node Id');
+            bubbles.addColumn('string','Node Id');
+            bubbles.addColumn('number','Number');
+
+            for (var i = 0 ; i<data.length ; i++){
+                bubbles.addRow([""+data[i].cardinal,data[i].position,data[i].nodeDistantId,""+data[i].nodeDistantId,data[i].cardinal]);
+            }
+
+            var optionsBubbles = {
+                title: 'Close Nodes Positions',
+                hAxis: {title: 'Position',minValue: -1},
+                vAxis: {title: 'Node',minValue: -1},
+                height: 400
+            };
+
+            var bubbleChart = new google.visualization.BubbleChart(document.getElementById('bubbleChart_div'));
+            bubbleChart.draw(bubbles, optionsBubbles);
+
+        }
+
+        /* ==============================================================================
+                                           Triggers
+           ============================================================================== */
+
+        function triggerGraphs(){
+            getCoordinateList();
+            getBubblesList();
+        }
+
+        google.setOnLoadCallback(triggerGraphs);
 
     </script>
 
