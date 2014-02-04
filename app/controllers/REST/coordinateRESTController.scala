@@ -6,6 +6,7 @@ import play.api.libs.functional.syntax._
 import models._
 import utils.Joda._
 import java.math.BigDecimal
+import models.DataBase.{InitTime, Coordinate}
 
 
 /**

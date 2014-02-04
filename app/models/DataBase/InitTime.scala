@@ -1,4 +1,4 @@
-package models
+package models.DataBase
 
 import anorm._
 import anorm.SqlParser._

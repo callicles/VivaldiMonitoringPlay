@@ -1,4 +1,4 @@
-package models
+package models.DataBase
 
 import anorm._
 import anorm.SqlParser._
@@ -7,9 +7,9 @@ import play.api.Play.current
 
 import utils.AnormExtension._
 import org.joda.time.DateTime
-import java.math.BigDecimal
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import java.math.BigDecimal
 
 
 /**

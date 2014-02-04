@@ -20,6 +20,7 @@ DELETE        /networks/:id                                       controllers.RE
 GET           /nodes/                                             controllers.REST.nodeRESTController.nodes
 GET           /nodes/:id/initTimes                                controllers.REST.initTimeRESTController.getInitTimesFromNode(id: Long)
 GET           /nodes/:nodeId/initTimes/:initId/coordinates        controllers.REST.coordinateRESTController.getNodesCoordinatesFromInitTime(nodeId: Long,initId: Long)
+GET           /nodes/:nodeId/initTimes/:initId/bubbles            controllers.REST.closeNodeRESTController.getBubblesFromInitTime(nodeId: Long, initId: Long)
 POST          /nodes/                                             controllers.REST.nodeRESTController.newNodes
 DELETE        /nodes/:id                                          controllers.REST.nodeRESTController.deleteNodes(id: Long)
 
