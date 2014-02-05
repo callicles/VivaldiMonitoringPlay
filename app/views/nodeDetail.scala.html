@@ -76,6 +76,14 @@
                 </div>
             </div>
 
+            <div class="row nodeGraphHolder">
+                <div class="large-12 columns">
+                    <div id="cumulChart_div">
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -124,6 +132,27 @@
                     }
                 }
             });
+        }
+
+
+        function toggleSelectfields(){
+            console.log("appel");
+            var $icon = $( "#fi-refresh" ),
+            animateClass = "icon-refresh-animate";
+
+            if($icon.hasClass(animateClass)){
+                $("#networkSelect").prop('disabled', 'disabled');
+                $("#nodeSelect" ).prop('disabled', 'disabled');
+                $("#nodeLock" ).addClass("fi-lock");
+                $("#networkLock" ).addClass("fi-lock");
+
+            } else{
+                $("#networkSelect" ).prop('disabled', false);
+                $("#nodeSelect" ).prop('disabled', false);
+                $("#nodeLock" ).removeClass();
+                $("#networkLock" ).removeClass();
+
+            }
         }
 
         /* ==============================================================================
@@ -185,25 +214,6 @@
             chartY.draw(dataY, optionsY);
         }
 
-        function toggleSelectfields(){
-            console.log("appel");
-            var $icon = $( "#fi-refresh" ),
-            animateClass = "icon-refresh-animate";
-
-            if($icon.hasClass(animateClass)){
-                $("#networkSelect").prop('disabled', 'disabled');
-                $("#nodeSelect" ).prop('disabled', 'disabled');
-                $("#nodeLock" ).addClass("fi-lock");
-                $("#networkLock" ).addClass("fi-lock");
-
-            } else{
-                $("#networkSelect" ).prop('disabled', false);
-                $("#nodeSelect" ).prop('disabled', false);
-                $("#nodeLock" ).removeClass();
-                $("#networkLock" ).removeClass();
-
-            }
-        }
 
         /* ==============================================================================
                                     Bubble Graph Generation
@@ -241,7 +251,7 @@
                 title: 'Close Nodes Positions',
                 hAxis: {title: 'Position',minValue: -1},
                 vAxis: {title: 'Node',minValue: -1},
-                height: 800
+                height: 400
             };
 
             var bubbleChart = new google.visualization.BubbleChart(document.getElementById('bubbleChart_div'));
@@ -250,12 +260,55 @@
         }
 
         /* ==============================================================================
+                                    Cumulated Graph Generation
+           ============================================================================== */
+
+        function getCumulatedList(){
+            $.ajax({
+                url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/closeNodesDistanceCumul",
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(textStatus, errorThrown);
+                },
+                success:  function( data ){
+                    handleCumulated(data);
+                }
+            });
+        }
+
+        function handleCumulated(data) {
+
+            var cumuls = new google.visualization.DataTable();
+
+            cumuls.addColumn('datetime','Time');
+            cumuls.addColumn('number','cumulatedDistance');
+
+            for (var i = 0 ; i<data.length ; i++){
+                var date = new Date();
+                date.setTime(data[i].time);
+                cumuls.addRow([date,data[i].distanceCumul]);
+            }
+
+            var optionsCumul = {
+                title: 'Close node tables distance cumulated',
+                hAxis: {title: 'time'},
+                vAxis: {title: 'Cumulated Distance'},
+                legend: 'none',
+                height: 400
+            };
+
+            var cumulChart = new google.visualization.ScatterChart(document.getElementById('cumulChart_div'));
+            cumulChart.draw(cumuls, optionsCumul);
+
+        }
+        /* ==============================================================================
                                            Triggers
            ============================================================================== */
 
         function triggerGraphs(){
             getCoordinateList();
             getBubblesList();
+            getCumulatedList();
         }
 
         google.setOnLoadCallback(triggerGraphs);
