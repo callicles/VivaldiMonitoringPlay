@@ -36,7 +36,8 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
     GET           /nodes/:id/initTimes                                            
     GET           /nodes/:nodeId/initTimes/:initId/coordinates                    
     GET           /nodes/:nodeId/initTimes/:initId/bubbles                        
-    GET           /nodes/:nodeId/initTimes/:initId/closeNodesDistanceCumul        POST          /nodes/                                                         
+    GET           /nodes/:nodeId/initTimes/:initId/closeNodesDistanceCumul        
+    POST          /nodes/                                                         
     POST          /nodes/withId                                                   
     DELETE        /nodes/:id                                                      
     
