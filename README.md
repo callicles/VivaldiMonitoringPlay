@@ -71,8 +71,9 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
     }
 ```
 
-    RESPONSE type : `JSON`<br> 
-    payload :
+RESPONSE type : `JSON`<br> 
+payload :
+
 ```Json
     {
         "id": 1,
@@ -97,12 +98,13 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
     }
 ```
 
-    OR
+OR
 
-    REQUEST type: `POST`<br> 
-    adress: `/nodes/withId`<br> 
-    header: `content-type: application/json`<br> 
-    payload:
+REQUEST type: `POST`<br> 
+adress: `/nodes/withId`<br> 
+header: `content-type: application/json`<br> 
+payload:
+
 ```Json
     {
         "id": <nodeId>
@@ -111,8 +113,8 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
     }
 ```
 
-    RESPONSE type : `JSON`<br> 
-    payload :
+RESPONSE type : `JSON`<br> 
+payload :
 ```Json
     {
         "id": 1,
