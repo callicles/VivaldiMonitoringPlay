@@ -306,13 +306,25 @@
                                            Triggers
            ============================================================================== */
 
+        function checkedSelectFields(){
+            var checked = true;
+
+            checked = checked && ($("select[name=network]").children().length != 0)
+            checked = checked && ($("select[name=node]").children().length != 0)
+            checked = checked && ($("select[name=initTime]").children().length != 0)
+
+            return checked;
+        }
+
         function triggerGraphs(){
             getCoordinateList();
             getBubblesList();
             getCumulatedList();
         }
 
-        google.setOnLoadCallback(triggerGraphs);
+        if (checkedSelectFields()){
+            google.setOnLoadCallback(triggerGraphs);
+        }
 
     </script>
 
