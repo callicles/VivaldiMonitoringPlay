@@ -100,7 +100,7 @@
                 url: location.protocol+"//"+window.location.host+"/networks/"+getSelectedId("network")+"/nodes",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
-                    showError(textStatus, errorThrown);
+                    showError(jqXHR.responseText , textStatus, errorThrown);
                 },
                 success:  function( data ){
                     nodeList.empty()
@@ -123,7 +123,7 @@
                 url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
-                    showError(textStatus, errorThrown);
+                    showError(jqXHR.responseText , textStatus, errorThrown);
                 },
                 success:  function( data ){
                     initTimeList.empty()
@@ -165,7 +165,7 @@
                 url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/coordinates",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
-                    showError(textStatus, errorThrown);
+                    showError(jqXHR.responseText , textStatus, errorThrown);
                 },
                 success:  function( data ){
                     handleCoordinate(data);
@@ -225,7 +225,7 @@
                 url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/bubbles",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
-                    showError(textStatus, errorThrown);
+                    showError(jqXHR.responseText , textStatus, errorThrown);
                 },
                 success:  function( data ){
                     handleBubbles(data);
@@ -268,7 +268,7 @@
                 url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/closeNodesDistanceCumul",
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
-                    showError(textStatus, errorThrown);
+                    showError(jqXHR.responseText , textStatus, errorThrown);
                 },
                 success:  function( data ){
                     handleCumulated(data);
