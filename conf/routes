@@ -3,40 +3,42 @@
 # ~~~~
 
 # Home page
-GET           /                                                   controllers.Application.index
+GET           /                                                               controllers.Application.index
 
 # Node page
-GET           /nodeDetail                                         controllers.Application.nodeDetail
+GET           /nodeDetail                                                     controllers.Application.nodeDetail
 
 # REST API
 
-GET           /networks/                                          controllers.REST.networkRESTController.networks
-GET           /networks/:id/nodes                                 controllers.REST.nodeRESTController.getNodesFromNetwork(id: Long)
-GET           /networks/:id/nodes/:nodeName                       controllers.REST.nodeRESTController.getNode(id: Long, nodeName: String)
-GET           /networks/:id/coordinates                           controllers.REST.coordinateRESTController.getLastSavedCoordinatesFromNetwork(id: Long,limit: Int ?= 1)
-POST          /networks/                                          controllers.REST.networkRESTController.newNetwork
-DELETE        /networks/:id                                       controllers.REST.networkRESTController.deleteNetwork(id: Long)
+GET           /networks/                                                      controllers.REST.networkRESTController.networks
+GET           /networks/:id/nodes                                             controllers.REST.nodeRESTController.getNodesFromNetwork(id: Long)
+GET           /networks/:id/nodes/:nodeName                                   controllers.REST.nodeRESTController.getNode(id: Long, nodeName: String)
+GET           /networks/:id/coordinates                                       controllers.REST.coordinateRESTController.getLastSavedCoordinatesFromNetwork(id: Long,limit: Int ?= 1)
+POST          /networks/                                                      controllers.REST.networkRESTController.newNetwork
+DELETE        /networks/:id                                                   controllers.REST.networkRESTController.deleteNetwork(id: Long)
 
-GET           /nodes/                                             controllers.REST.nodeRESTController.nodes
-GET           /nodes/:id/initTimes                                controllers.REST.initTimeRESTController.getInitTimesFromNode(id: Long)
-GET           /nodes/:nodeId/initTimes/:initId/coordinates        controllers.REST.coordinateRESTController.getNodesCoordinatesFromInitTime(nodeId: Long,initId: Long)
-GET           /nodes/:nodeId/initTimes/:initId/bubbles            controllers.REST.closeNodeRESTController.getBubblesFromInitTime(nodeId: Long, initId: Long)
-POST          /nodes/                                             controllers.REST.nodeRESTController.newNodes
-DELETE        /nodes/:id                                          controllers.REST.nodeRESTController.deleteNodes(id: Long)
+GET           /nodes/                                                         controllers.REST.nodeRESTController.nodes
+GET           /nodes/:id/initTimes                                            controllers.REST.initTimeRESTController.getInitTimesFromNode(id: Long)
+GET           /nodes/:nodeId/initTimes/:initId/coordinates                    controllers.REST.coordinateRESTController.getNodesCoordinatesFromInitTime(nodeId: Long,initId: Long)
+GET           /nodes/:nodeId/initTimes/:initId/bubbles                        controllers.REST.closeNodeRESTController.getBubblesFromInitTime(nodeId: Long, initId: Long)
+GET           /nodes/:nodeId/initTimes/:initId/closeNodesDistanceCumul        controllers.REST.closeNodeRESTController.getDistanceCumulForCloseNodeArray(nodeId: Long, initId: Long)
 
-GET           /initTimes/                                         controllers.REST.initTimeRESTController.initTimes
-POST          /initTimes/                                         controllers.REST.initTimeRESTController.newInitTimes
-DELETE        /initTimes/:id                                      controllers.REST.initTimeRESTController.deleteInitTimes(id: Long)
+POST          /nodes/                                                         controllers.REST.nodeRESTController.newNodes
+DELETE        /nodes/:id                                                      controllers.REST.nodeRESTController.deleteNodes(id: Long)
 
-GET           /coordinates/                                       controllers.REST.coordinateRESTController.coordinates
-POST          /coordinates/                                       controllers.REST.coordinateRESTController.newCoordinates
-DELETE        /coordinates/:id                                    controllers.REST.coordinateRESTController.deleteCoordinates(id: Long)
+GET           /initTimes/                                                     controllers.REST.initTimeRESTController.initTimes
+POST          /initTimes/                                                     controllers.REST.initTimeRESTController.newInitTimes
+DELETE        /initTimes/:id                                                  controllers.REST.initTimeRESTController.deleteInitTimes(id: Long)
 
-GET           /closeNodes/                                        controllers.REST.closeNodeRESTController.closeNodes
-POST          /closeNodes/                                        controllers.REST.closeNodeRESTController.newCloseNode
-POST          /closeNodes/list                                    controllers.REST.closeNodeRESTController.newCloseNodesFromArray
-DELETE        /closeNodes/:id                                     controllers.REST.closeNodeRESTController.deleteCoordinates(id: Long)
+GET           /coordinates/                                                   controllers.REST.coordinateRESTController.coordinates
+POST          /coordinates/                                                   controllers.REST.coordinateRESTController.newCoordinates
+DELETE        /coordinates/:id                                                controllers.REST.coordinateRESTController.deleteCoordinates(id: Long)
+
+GET           /closeNodes/                                                    controllers.REST.closeNodeRESTController.closeNodes
+POST          /closeNodes/                                                    controllers.REST.closeNodeRESTController.newCloseNode
+POST          /closeNodes/list                                                controllers.REST.closeNodeRESTController.newCloseNodesFromArray
+DELETE        /closeNodes/:id                                                 controllers.REST.closeNodeRESTController.deleteCoordinates(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                                       controllers.Assets.at(path="/public", file)
+GET           /assets/*file                                                   controllers.Assets.at(path="/public", file)

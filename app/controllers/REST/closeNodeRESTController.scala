@@ -60,20 +60,15 @@ object closeNodeRESTController extends Controller{
       }
   }
 
+  /**
+   * Generates the data structure for the bubble graph
+   * @param nodeId Reference to the considered node
+   * @param initTimeId reference to the Init time
+   * @return Delivers a List[closeNodeBubble] in Json
+   */
   def getBubblesFromInitTime(nodeId: Long, initTimeId: Long) = Action{
 
-    // Routine to get elements between initializations
-    // =========
-    val initTimes = InitTime.getInitTimesFromNode(nodeId).sortBy(_.initTime).toList
-    val initTimeRef = initTimes.find(i => i.id == initTimeId).head
-
-    var closeNodes = CloseNode.getCloseNodesFromNode(nodeId).dropWhile((c) => c.logTime.getMillis <= initTimeRef.initTime.getMillis)
-
-    if (initTimes.last.id != initTimeId){
-      val postInit = initTimes.dropWhile(c => c.initTime.getMillis <= initTimeRef.initTime.getMillis).head
-      closeNodes = closeNodes.takeWhile(c => c.logTime.getMillis < postInit.initTime.getMillis)
-    }
-    // =========
+    val closeNodes = closeNodeFromInitTime(nodeId, initTimeId)
 
     // Group nodes by logTime to reconstitute close node arrays
     val closeNodesGroupedSorted = closeNodes.groupBy(_.logTime).mapValues(closeNodeList => closeNodeList.sortBy(_.distance))
@@ -92,6 +87,48 @@ object closeNodeRESTController extends Controller{
     Ok(Json.toJson(bubbleList.map{ b =>
       Json.obj("nodeDistantId" ->b.nodeDistantId,"position" ->b.position, "cardinal" ->b.cardinal)
     }))
+  }
+
+  /**
+   * This returns a time and a cumulated distance for the current node.
+   * @param nodeId reference to the considered node
+   * @param initTimeId init Time reference from which the node is active
+   * @return a list of Json objects with a time and the corresponding cumulated distance.
+   */
+  def getDistanceCumulForCloseNodeArray(nodeId: Long, initTimeId: Long) = Action{
+    val closeNodes = closeNodeFromInitTime(nodeId, initTimeId)
+
+    val scatterPointsMap = closeNodes.groupBy(_.logTime).mapValues(closeNodeList => {
+      var distance: Float = 0
+      closeNodeList.foreach(node => distance=distance + node.distance.floatValue())
+      distance
+    })
+
+    val scatterPointArray = scatterPointsMap.toArray
+
+    Ok(Json.toJson(scatterPointArray.map { n =>
+      Json.obj("time" ->n._1,"distanceCumul" ->n._2)
+    }))
+  }
+
+  /**
+   * Retrieves close nodes between the init time specified and the next one.
+   * @param nodeId Node considered
+   * @param initTimeId InitTime reference
+   * @return List[CloseNode]
+   */
+  def closeNodeFromInitTime(nodeId: Long, initTimeId: Long): List[CloseNode] = {
+    // Routine to get elements between initializations
+    val initTimes = InitTime.getInitTimesFromNode(nodeId).sortBy(_.initTime).toList
+    val initTimeRef = initTimes.find(i => i.id == initTimeId).head
+
+    var closeNodes = CloseNode.getCloseNodesFromNode(nodeId).dropWhile((c) => c.logTime.getMillis <= initTimeRef.initTime.getMillis)
+
+    if (initTimes.last.id != initTimeId){
+      val postInit = initTimes.dropWhile(c => c.initTime.getMillis <= initTimeRef.initTime.getMillis).head
+      closeNodes = closeNodes.takeWhile(c => c.logTime.getMillis < postInit.initTime.getMillis)
+    }
+    closeNodes
   }
 
   def deleteCoordinates (id: Long) = Action {
