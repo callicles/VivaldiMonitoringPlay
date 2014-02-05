@@ -96,6 +96,20 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
     }
 ```
 
+    OR
+
+    REQUEST type: `POST`<br> 
+    adress: `/nodes/withId`<br> 
+    header: `content-type: application/json`<br> 
+    payload:
+```Json
+    {
+        "id": <nodeId>
+        "nodeName": "<yourNodeName>",
+        "networkId": <yourNetworkId>
+    }
+```
+
     RESPONSE type : `JSON`<br> 
     payload :
 ```Json
