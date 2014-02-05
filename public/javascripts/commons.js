@@ -37,7 +37,7 @@ function createNetwork(){
         dataType: "json",
         data: JSON.stringify({"networkName": networkName}),
         error: function( jqXHR, textStatus, errorThrown ){
-            showError(jqXHR.responseText , textStatus, errorThrown);
+            showError(jqXHR , textStatus, errorThrown);
         },
         success:  function(data){
             showNetworkData(data);
@@ -68,7 +68,7 @@ function fetchNetworkList(callback){
         url: location.protocol+"//"+window.location.host+"/networks/",
         accepts: "application/json",
         error: function( jqXHR, textStatus, errorThrown ){
-            showError(jqXHR.responseText,textStatus, errorThrown);
+            showError(jqXHR,textStatus, errorThrown);
         },
         success:  function( data ){
             callback(data)
@@ -86,7 +86,7 @@ function deleteNetworks(networks){
                 url: location.protocol+"//"+window.location.host+"/networks/"+networks[i].id,
                 accepts: "application/json",
                 error: function( jqXHR, textStatus, errorThrown ){
-                    showError(jqXHR.responseText,textStatus, errorThrown);
+                    showError(jqXHR,textStatus, errorThrown);
                 }
             })
         );
