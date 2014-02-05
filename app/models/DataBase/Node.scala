@@ -58,6 +58,16 @@ object Node {
     }
   }
 
+  def createWithId(id: Long, nodeName: String, networkId: Long) {
+    DB.withConnection { implicit c =>
+      SQL("insert into node (id,nodeName, networkId) values ({id},{nodeName}, {networkId})").on(
+        'id ->id,
+        'nodeName -> nodeName,
+        'networkId -> networkId
+      ).executeUpdate()
+    }
+  }
+
   def delete(id: Long) {
     DB.withConnection { implicit c =>
       SQL("delete from node where id = {id}").on(

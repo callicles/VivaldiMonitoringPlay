@@ -25,31 +25,33 @@ _IMPORTANT NOTE_ : As for now the POSTing endpoints do not have a protection of 
 
 ### Endpoints
 
-    GET           /networks/
-    GET           /networks/:id/nodes
-    GET           /networks/:id/nodes/:nodeName                                 
-    GET           /networks/:id/coordinates
-    POST          /networks/                                         
-    DELETE        /networks/:id                                     
+    GET           /networks/                                                      
+    GET           /networks/:id/nodes                                             
+    GET           /networks/:id/nodes/:nodeName                                   
+    GET           /networks/:id/coordinates                                       
+    POST          /networks/                                                      
+    DELETE        /networks/:id                                                   
     
-    GET           /nodes/                                           
-    GET           /nodes/:id/initTimes                                
-    GET           /nodes/:nodeId/initTimes/:initId/coordinates       
-    POST          /nodes/                                           
-    DELETE        /nodes/:id                                          
+    GET           /nodes/                                                         
+    GET           /nodes/:id/initTimes                                            
+    GET           /nodes/:nodeId/initTimes/:initId/coordinates                    
+    GET           /nodes/:nodeId/initTimes/:initId/bubbles                        
+    GET           /nodes/:nodeId/initTimes/:initId/closeNodesDistanceCumul        POST          /nodes/                                                         
+    POST          /nodes/withId                                                   
+    DELETE        /nodes/:id                                                      
     
-    GET           /initTimes/                                        
-    POST          /initTimes/                                        
-    DELETE        /initTimes/:id                                     
+    GET           /initTimes/                                                     
+    POST          /initTimes/                                                     
+    DELETE        /initTimes/:id                                                  
     
-    GET           /coordinates/                                       
-    POST          /coordinates/                                      
-    DELETE        /coordinates/:id
+    GET           /coordinates/                                                   
+    POST          /coordinates/                                                   
+    DELETE        /coordinates/:id                                                
     
-    GET           /closeNodes/                                        
-    POST          /closeNodes/                                        
-    POST          /closeNodes/list                                    
-    DELETE        /closeNodes/:id                                     
+    GET           /closeNodes/                                                    
+    POST          /closeNodes/                                                    
+    POST          /closeNodes/list                                                
+    DELETE        /closeNodes/:id                                      
 
 
 ### How to use to monitor a vivaldi network

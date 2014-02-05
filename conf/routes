@@ -22,8 +22,8 @@ GET           /nodes/:id/initTimes                                            co
 GET           /nodes/:nodeId/initTimes/:initId/coordinates                    controllers.REST.coordinateRESTController.getNodesCoordinatesFromInitTime(nodeId: Long,initId: Long)
 GET           /nodes/:nodeId/initTimes/:initId/bubbles                        controllers.REST.closeNodeRESTController.getBubblesFromInitTime(nodeId: Long, initId: Long)
 GET           /nodes/:nodeId/initTimes/:initId/closeNodesDistanceCumul        controllers.REST.closeNodeRESTController.getDistanceCumulForCloseNodeArray(nodeId: Long, initId: Long)
-
 POST          /nodes/                                                         controllers.REST.nodeRESTController.newNodes
+POST          /nodes/withId                                                   controllers.REST.nodeRESTController.newNodesWithId
 DELETE        /nodes/:id                                                      controllers.REST.nodeRESTController.deleteNodes(id: Long)
 
 GET           /initTimes/                                                     controllers.REST.initTimeRESTController.initTimes

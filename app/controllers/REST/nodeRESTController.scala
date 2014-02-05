@@ -48,6 +48,30 @@ object nodeRESTController extends Controller {
       }
   }
 
+  def newNodesWithId = Action(parse.json) {
+
+    implicit val rdNewNode = (
+      (__ \ 'id).read[Long] and
+      (__ \ 'nodeName).read[String] and
+        (__ \ 'networkId).read[Long]
+      ).tupled
+
+    request =>
+      request.body.validate[(Long,String, Long)].map{
+        case (id,nodeName, networkId) => {
+          Node.createWithId(id,nodeName,networkId)
+          val node = Node.getNode(nodeName,networkId)
+          if (node != null){
+            Ok(Json.obj("id" ->node.id,"nodeName" ->Utility.escape(node.nodeName), "networkId" ->node.networkId))
+          }else{
+            NotFound
+          }
+        }
+      }.recoverTotal{
+        e=> BadRequest("Detected error: "+ JsError.toFlatJson(e))
+      }
+  }
+
   def getNodesFromNetwork(id: Long) = Action {
     Ok(Json.toJson(Node.getNodesFromNetwork(id).map{ t =>
       Json.obj("id" ->t.id,"nodeName" ->Utility.escape(t.nodeName), "networkId" ->t.networkId)
