@@ -1,0 +1,16 @@
+Commands done in the command line :
+
+export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin
+apt-get install postgresql postgresql-client
+
+unzip monitoring.zip
+
+// peut être pas utile de faire ça
+useradd -d /tmp
+echo "azerty" | passwd dbuser --stdin
+
+su - postgres
+psql CREATE USER dbuser WITH PASSWORD 'azerty';
+psql CREATE DATABASE playdb OWNER dbuser;
+
+VivaldiMonitoringPlayApp-1.0-SNAPSHOT/bin/vivaldimonitoringapp -Ddb.default.url="postgres://dbuser:azerty@localhost/playdb" -DapplyEvolutions.default=true

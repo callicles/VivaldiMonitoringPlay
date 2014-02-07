@@ -3,7 +3,7 @@ package controllers.REST
 import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
-import models._
+import models.DataBase._
 import utils.Joda._
 import utils.utilities.transpose
 import java.math.BigDecimal
@@ -84,9 +84,19 @@ object closeNodeRESTController extends Controller{
         distantNodeId => bubbleList = bubbleList:+CloseNodeBubble(distantNodeId,closeNodesGroupedByPosition.indexOf(nodesInPosition),nodesInPosition.count(_.distantNodeId == distantNodeId))
     ))
 
+    /*
     Ok(Json.toJson(bubbleList.map{ b =>
       Json.obj("nodeDistantId" ->b.nodeDistantId,"position" ->b.position, "cardinal" ->b.cardinal)
     }))
+    */
+
+    // Format for D3.js
+    val bubbleListMapped = bubbleList.groupBy(closeNode => closeNode.nodeDistantId).toArray
+
+    Ok(Json.toJson(bubbleListMapped.map(
+      tuple => Json.obj("nodeDistantId" -> tuple._1,"nodeName" -> models.DataBase.Node.getNode(tuple._1).head.nodeName, "bubbles" -> tuple._2.filterNot(_.cardinal == 0).map(
+        closeNode => Array(closeNode.position,closeNode.cardinal)
+      )))))
   }
 
   /**

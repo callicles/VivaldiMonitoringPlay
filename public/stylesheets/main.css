@@ -49,6 +49,9 @@ html, body { height: 100%; }
     display: inline-block;
 }
 
+svg {font: 10px sans-serif;}
+.axis path, .axis line {fill: none;stroke: #000;shape-rendering: crispEdges;}
+
 @-webkit-keyframes rotate {
     from { -webkit-transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); }

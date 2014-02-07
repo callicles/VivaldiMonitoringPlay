@@ -49,6 +49,12 @@ object Node {
     }
   }
 
+  def getNode(nodeId: Long):List[Node] = DB.withConnection { implicit c =>
+    SQL("select * from node where (id) = ({nodeId})").on(
+      "nodeId" -> nodeId
+    ).as(node *)
+  }
+
   def create(nodeName: String, networkId: Long) {
     DB.withConnection { implicit c =>
       SQL("insert into node (nodeName, networkId) values ({nodeName}, {networkId})").on(
