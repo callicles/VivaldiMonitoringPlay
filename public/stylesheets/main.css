@@ -18,9 +18,6 @@ html, body { height: 100%; }
 .graphHolder{
     height: 95vh
 }
-.nodeGraphHolder{
-    height: 45vh
-}
 
 .details{
     background-color: #f2f2f2;

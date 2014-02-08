@@ -282,7 +282,7 @@
 
             var margin = {top: 45, right: 200, bottom: 0, left: 20},
                 width = $("#Ychart_div").width()-200,
-                height = 650;
+                height = data.length*23+50;
 
             var start_position = 0,
                 end_position = max_position;
@@ -301,6 +301,7 @@
 
             var svg = d3.select("#bubbleChart_div").append("svg")
                 .attr("width", width + margin.left + margin.right)
+                .attr("height", height)
                 .style("margin-left", margin.left + "px")
                 .style("margin-top", margin.top + "px")
                 .append("g")
