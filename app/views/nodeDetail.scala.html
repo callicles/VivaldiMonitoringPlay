@@ -299,6 +299,8 @@
             var formatPositions = d3.format("0000");
             xAxis.tickFormat(formatPositions);
 
+            $('#bubbleChart_div' ).empty()
+
             var svg = d3.select("#bubbleChart_div").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height)
