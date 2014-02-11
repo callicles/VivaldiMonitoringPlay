@@ -280,9 +280,9 @@
                 }
             }
 
-            var margin = {top: 45, right: 200, bottom: 0, left: 20},
-                width = $("#Ychart_div").width()-200,
-                height = data.length*23+50;
+            var margin = {top: 45, right: 200, bottom: 0, left: 40},
+                width = $("#Ychart_div").width()-margin.right,
+                bubblesHeight = data.length*23+50;
 
             var start_position = 0,
                 end_position = max_position;
@@ -303,7 +303,7 @@
 
             var svg = d3.select("#bubbleChart_div").append("svg")
                 .attr("width", width + margin.left + margin.right)
-                .attr("height", height)
+                .attr("height", bubblesHeight)
                 .style("margin-left", margin.left + "px")
                 .style("margin-top", margin.top + "px")
                 .append("g")
@@ -382,6 +382,127 @@
                 d3.select(g).selectAll("text.value").style("display","none");
             }
 
+            // Bar chart
+            var currentBarHeight = 12;
+            var barHeight = max_position*currentBarHeight*data.length+100 - margin.top - margin.bottom;
+
+            var barX = d3.scale.linear()
+                .range([width, 0]);
+
+            var y0 = d3.scale.ordinal()
+                .rangeRoundBands([0, barHeight],.3);
+
+            var y1 = d3.scale.ordinal();
+
+            var barYAxis = d3.svg.axis()
+                .scale(y0)
+                .orient("left");
+
+            var barXAxis = d3.svg.axis()
+                .scale(barX)
+                .orient("top");
+
+            var barSvg = d3.select("#bubbleChart_div").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", barHeight + margin.top + margin.bottom)
+                .style("margin-left", margin.left + "px")
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var nodesNames = data.map(function(node){return node.nodeName});
+            var positions = [];
+
+            data.formated = [];
+
+            for (var i = 0; i<=max_position ; i++){
+                data.formated.push(data.map(function(node){
+                    return [node.nodeName,node.bubbles.filter(function(tuple){return i == tuple[0]} ).map(function(tuple){return tuple[1]}),""+i];
+                } ));
+                positions.push(""+i);
+            }
+
+            data.formated.forEach(function(position){
+                position.forEach(function(node){
+                    node[1] = node[1][0]
+                })
+            });
+
+            data.formated = data.formated.map(function(position){
+                return position.filter(function(node){
+                    console.log('test boucle : '+ typeof node[1] != "undefined");
+                    return typeof node[1] != 'undefined';
+                });
+            });
+
+            console.log(data.formated);
+
+            barX.domain([d3.max(data, function(d) { return d3.max(d.bubbles, function(d) { return d[1]; }); }),0 ]);
+            y0.domain(positions);
+            y1.domain(nodesNames).rangeRoundBands([0, y0.rangeBand()]);
+
+            barSvg.append("g")
+                .attr("class", "x axis")
+                .call(barXAxis)
+                .append("text")
+                .attr("y", -30)
+                .attr("dy", ".71em")
+                .style("text-anchor", "start")
+                .text("Number of hits");
+
+            barSvg.append("g")
+                .attr("class", "y axis")
+                .call(barYAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -30)
+                .attr("x", -20)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Position");
+
+
+            var position = barSvg.selectAll(".position")
+                .data(data.formated)
+                .enter().append("g")
+                .attr("class", "g")
+                .attr("transform", function(d) {return "translate(0," + y0( d[0][2]) + ")"; });
+
+            position.selectAll("rect")
+                .data(function(d) { return d; })
+                .enter().append("rect")
+                .attr("width", function(d) {return barX(d[1]); })
+                .attr("x", 2)
+                .attr("y", function(d) { return y1(d[0]); })
+                .attr("height",  y1.rangeBand())
+                .style("fill", function(d) { return c(d[0]); });
+
+            position.selectAll(".label")
+                .data(function(d){  return d; })
+                .enter().append("text")
+                .attr("x", function(d) {return barX(d[1]); })
+                .attr("y", function(d) {return y1(d[0]) + 7; })
+                .style("text-anchor", "end")
+                .style("display", function(d){if(barX(d[1]) === 'NaN'){return "none";}else{return "block";}})
+                .text(function(d) {return d[0];});
+
+            var legend = barSvg.selectAll(".legend")
+                .data(nodesNames.slice().reverse())
+                .enter().append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+            legend.append("rect")
+                .attr("x", width +20)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("fill", c);
+
+            legend.append("text")
+                .attr("x", width + 42)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .style("text-anchor", "start")
+                .text(function(d) { return d; });
         }
 
         /* ==============================================================================
