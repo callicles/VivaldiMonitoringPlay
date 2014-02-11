@@ -121,6 +121,14 @@ object closeNodeRESTController extends Controller{
     }))
   }
 
+  def getLastCloseNodes(localNodeId: Long, initTimeId: Long) = Action {
+    val closeNodes = closeNodeFromInitTime(localNodeId,initTimeId).groupBy(_.logTime).toArray.sortBy(_._1).head._2.sortBy(_.distance)
+
+    Ok(Json.toJson( closeNodes.map { c =>
+      Json.obj("id" ->c.id,"nodeName" -> models.DataBase.Node.getNode(c.distantNodeId).head.nodeName,"localNodeId" ->c.localNodeId, "distantNodeId" ->c.distantNodeId, "logTime" ->c.logTime, "distance" ->c.distance.floatValue())
+    }))
+  }
+
   /**
    * Retrieves close nodes between the init time specified and the next one.
    * @param nodeId Node considered

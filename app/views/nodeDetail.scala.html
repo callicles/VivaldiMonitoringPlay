@@ -53,8 +53,18 @@
             </div>
         </div>
         <div class="large-9 columns">
+            <h3>Last close node array</h3>
             <div class="row nodeGraphHolder">
                 <div class="large-12 columns">
+                    <div id="currentCloseNodeTable_div">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row nodeGraphHolder">
+                <div class="large-12 columns">
+                    <h3>Charts</h3>
                     <div id="Xchart_div">
 
                     </div>
@@ -70,7 +80,7 @@
 
             <div class="row nodeGraphHolder">
                 <div class="large-12 columns">
-                    <div id="bubbleChart_div">
+                    <div id="cumulChart_div">
 
                     </div>
                 </div>
@@ -78,7 +88,7 @@
 
             <div class="row nodeGraphHolder">
                 <div class="large-12 columns">
-                    <div id="cumulChart_div">
+                    <div id="bubbleChart_div">
 
                     </div>
                 </div>
@@ -153,6 +163,61 @@
                 $("#networkLock" ).removeClass();
 
             }
+        }
+
+        /* ==============================================================================
+                                    Close node table generation
+           ============================================================================== */
+
+        function getLatestCloseNodeList(){
+            $.ajax({
+                url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/latestCloseNodes",
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(jqXHR , textStatus, errorThrown);
+                },
+                success:  function( data ){
+                    generateCloseNodeTable(data);
+                }
+            });
+        }
+
+        function generateCloseNodeTable(data){
+
+            var tableDiv = $('#currentCloseNodeTable_div');
+            var maxChar = d3.max(data, function(d) { return d['nodeName' ].length; });
+            var cellWidth = (maxChar+2)*parseFloat($("body").css("font-size"));
+            var panelWidth = $('h3').width();
+            var containerCellCapacity = panelWidth/cellWidth-2;
+
+
+            var dataTables = data.length/containerCellCapacity;
+
+
+            var compteur = 0;
+
+            for (var i = 0 ; i < dataTables; i++){
+                tableDiv.append("<table id='closeNodeTable-"+i+"'>");
+                var tableI = $("#closeNodeTable-"+i);
+
+                tableI.append("<tr id='position-"+i+"'>")
+                      .append("<tr id ='nodeName-"+i+"'>")
+                      .append("<tr id ='distance-"+i+"'>");
+
+                $("#position-"+i).append("<th>Position</th>");
+                $("#nodeName-"+i).append("<th>Node Name</th>")
+                $("#distance-"+i).append("<th>Distance</th>");
+
+                for(var j = 0; j< containerCellCapacity ; j++){
+                    if (compteur < data.length){
+                        $("#position-"+i ).append("<td>"+compteur+"</td>");
+                        $("#nodeName-"+i ).append("<td>"+data[compteur].nodeName+"</td>");
+                        $("#distance-"+i ).append("<td>"+data[compteur].distance+"</td>");
+                        compteur++;
+                    }
+                }
+            }
+
         }
 
         /* ==============================================================================
@@ -429,12 +494,9 @@
 
             data.formated = data.formated.map(function(position){
                 return position.filter(function(node){
-                    console.log('test boucle : '+ typeof node[1] != "undefined");
                     return typeof node[1] != 'undefined';
                 });
             });
-
-            console.log(data.formated);
 
             barX.domain([d3.max(data, function(d) { return d3.max(d.bubbles, function(d) { return d[1]; }); }),0 ]);
             y0.domain(positions);
@@ -562,6 +624,7 @@
         }
 
         function triggerGraphs(){
+            getLatestCloseNodeList();
             getCoordinateList();
             getBubblesList();
             getCumulatedList();
