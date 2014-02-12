@@ -185,6 +185,7 @@
         function generateCloseNodeTable(data){
 
             var tableDiv = $('#currentCloseNodeTable_div');
+            tableDiv.empty();
             var maxChar = d3.max(data, function(d) { return d['nodeName' ].length; });
             var cellWidth = (maxChar+2)*parseFloat($("body").css("font-size"));
             var panelWidth = $('h3').width();
