@@ -121,6 +121,12 @@ object closeNodeRESTController extends Controller{
     }))
   }
 
+  /**
+   * Retrieves the last close node table
+   * @param localNodeId local node to retrieve the table of close node from
+   * @param initTimeId initTime from which to get the value.
+   * @return a table of close node
+   */
   def getLastCloseNodes(localNodeId: Long, initTimeId: Long) = Action {
     val closeNodes = closeNodeFromInitTime(localNodeId,initTimeId)
     val closeNodesGrouped = closeNodes.groupBy(_.logTime).toArray
@@ -150,6 +156,18 @@ object closeNodeRESTController extends Controller{
       closeNodes = closeNodes.takeWhile(c => c.logTime.getMillis < postInit.initTime.getMillis)
     }
     closeNodes
+  }
+
+  def distancesOfTheClosestNode(nodeId: Long, initTimeId: Long) = Action {
+    val closeNodes = closeNodeFromInitTime(nodeId,initTimeId)
+    val closeNodesGrouped = closeNodes.groupBy(_.logTime).toArray
+    val closeNodesGroupedSorted = closeNodesGrouped.sortBy(_._1)
+    val closeNodesGroupedSortedTwice = closeNodesGroupedSorted.map(tuple => tuple._2.sortBy(_.distance))
+
+    val closestNodes = closeNodesGroupedSortedTwice.map(closeNodeList => closeNodeList.head)
+    Ok(Json.toJson( closestNodes.map { c =>
+      Json.obj("logTime" ->c.logTime, "distance" ->c.distance.floatValue())
+    }))
   }
 
   def deleteCoordinates (id: Long) = Action {

@@ -19,7 +19,8 @@ DELETE        /networks/:id                                                   co
 
 GET           /nodes/                                                         controllers.REST.nodeRESTController.nodes
 GET           /nodes/:id/initTimes                                            controllers.REST.initTimeRESTController.getInitTimesFromNode(id: Long)
-GET           /nodes/:nodeId/initTimes/:initId/latestCloseNodes              controllers.REST.closeNodeRESTController.getLastCloseNodes(nodeId: Long, initId: Long)
+GET           /nodes/:nodeId/initTimes/:initId/latestCloseNodes               controllers.REST.closeNodeRESTController.getLastCloseNodes(nodeId: Long, initId: Long)
+GET           /nodes/:nodeId/initTimes/:initId/closestNodeDistanceEvolution   controllers.REST.closeNodeRESTController.distancesOfTheClosestNode(nodeId: Long, initId: Long)
 GET           /nodes/:nodeId/initTimes/:initId/coordinates                    controllers.REST.coordinateRESTController.getNodesCoordinatesFromInitTime(nodeId: Long,initId: Long)
 GET           /nodes/:nodeId/initTimes/:initId/bubbles                        controllers.REST.closeNodeRESTController.getBubblesFromInitTime(nodeId: Long, initId: Long)
 GET           /nodes/:nodeId/initTimes/:initId/closeNodesDistanceCumul        controllers.REST.closeNodeRESTController.getDistanceCumulForCloseNodeArray(nodeId: Long, initId: Long)

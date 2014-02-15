@@ -80,6 +80,14 @@
 
             <div class="row nodeGraphHolder">
                 <div class="large-12 columns">
+                    <div id="closestNodeDistanceChart_div">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row nodeGraphHolder">
+                <div class="large-12 columns">
                     <div id="cumulChart_div">
 
                     </div>
@@ -182,6 +190,7 @@
             });
         }
 
+
         function generateCloseNodeTable(data){
 
             var tableDiv = $('#currentCloseNodeTable_div');
@@ -278,6 +287,48 @@
             chartX.draw(dataX, optionsX);
             var chartY = new google.visualization.ScatterChart(document.getElementById('Ychart_div'));
             chartY.draw(dataY, optionsY);
+        }
+
+        /* ==============================================================================
+                             Distance evolution of the closest Node
+           ============================================================================== */
+
+        function getClosestNodeDistances(){
+            $.ajax({
+                url: location.protocol+"//"+window.location.host+"/nodes/"+getSelectedId("node")+"/initTimes/"+getSelectedId("initTime")+"/closestNodeDistanceEvolution",
+                accepts: "application/json",
+                error: function( jqXHR, textStatus, errorThrown ){
+                    showError(jqXHR , textStatus, errorThrown);
+                },
+                success:  function( data ){
+                    handleClosestNode(data);
+                }
+            });
+        }
+
+        function handleClosestNode(data){
+            var googleData = new google.visualization.DataTable();
+
+            googleData.addColumn("datetime","time");
+            googleData.addColumn("number","distance");
+
+            for (var i = 0 ; i<data.length ; i++){
+                var date = new Date();
+                date.setTime(data[i].logTime);
+                googleData.addRow([date,data[i].distance]);
+            }
+
+            var options = {
+                title: 'distance of the closest node along time',
+                hAxis: {title: 'time'},
+                vAxis: {title: 'distance'},
+                legend: 'none',
+                height: 400
+            };
+
+            var chart = new google.visualization.ScatterChart(document.getElementById('closestNodeDistanceChart_div'));
+            chart.draw(googleData, options);
+
         }
 
 
@@ -626,6 +677,7 @@
 
         function triggerGraphs(){
             getLatestCloseNodeList();
+            getClosestNodeDistances();
             getCoordinateList();
             getBubblesList();
             getCumulatedList();
