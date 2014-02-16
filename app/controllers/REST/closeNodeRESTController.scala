@@ -130,7 +130,7 @@ object closeNodeRESTController extends Controller{
   def getLastCloseNodes(localNodeId: Long, initTimeId: Long) = Action {
     val closeNodes = closeNodeFromInitTime(localNodeId,initTimeId)
     val closeNodesGrouped = closeNodes.groupBy(_.logTime).toArray
-    val closeNodesGroupedSorted = closeNodesGrouped.sortBy(_._1)
+    val closeNodesGroupedSorted = closeNodesGrouped.sortBy(_._1).reverse
     val selectSort = closeNodesGroupedSorted.head._2.sortBy(_.distance)
 
     Ok(Json.toJson( selectSort.map { c =>
