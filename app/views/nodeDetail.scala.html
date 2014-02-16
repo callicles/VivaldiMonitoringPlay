@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div class="large-9 columns">
+        <div class="large-9 columns content">
             <h3>Last close node array</h3>
             <div class="row nodeGraphHolder">
                 <div class="large-12 columns">
@@ -227,7 +227,7 @@
                     }
                 }
             }
-
+            refreshSidebarHeight();
         }
 
         /* ==============================================================================
@@ -287,6 +287,7 @@
             chartX.draw(dataX, optionsX);
             var chartY = new google.visualization.ScatterChart(document.getElementById('Ychart_div'));
             chartY.draw(dataY, optionsY);
+            refreshSidebarHeight();
         }
 
         /* ==============================================================================
@@ -328,7 +329,7 @@
 
             var chart = new google.visualization.ScatterChart(document.getElementById('closestNodeDistanceChart_div'));
             chart.draw(googleData, options);
-
+            refreshSidebarHeight();
         }
 
 
@@ -617,6 +618,7 @@
                 .attr("dy", ".35em")
                 .style("text-anchor", "start")
                 .text(function(d) { return d; });
+            refreshSidebarHeight();
         }
 
         /* ==============================================================================
@@ -659,7 +661,7 @@
 
             var cumulChart = new google.visualization.ScatterChart(document.getElementById('cumulChart_div'));
             cumulChart.draw(cumuls, optionsCumul);
-
+            refreshSidebarHeight();
         }
         /* ==============================================================================
                                            Triggers
@@ -685,6 +687,10 @@
 
         if (checkedSelectFields()){
             google.setOnLoadCallback(triggerGraphs);
+        }
+
+        function refreshSidebarHeight(){
+            $('.sidebar' ).height($('.content' ).height());
         }
 
     </script>

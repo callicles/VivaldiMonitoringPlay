@@ -127,9 +127,12 @@
 
             var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
             chart.draw(dataToPrint, options);
+
+            $('.sidebar' ).height('800px');
         }
 
         google.setOnLoadCallback(getNodeList);
+
     </script>
 
 }
